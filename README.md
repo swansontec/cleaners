@@ -1,11 +1,11 @@
-# as-cleaned
+# cleaners
 
-[![Build Status](https://travis-ci.com/swansontec/as-cleaned.svg?branch=master)](https://travis-ci.com/swansontec/as-clean)
+[![Build Status](https://travis-ci.com/swansontec/cleaners.svg?branch=master)](https://travis-ci.com/swansontec/as-clean)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 > Cleans & validates untrusted data, with TypeScript & Flow support
 
-Do you ever read JSON data from the outside world? If you, you should probably clean & validate that data before you start using it. That can be a lot of work, so `as-cleaned` is here to help with:
+Do you ever read JSON data from the outside world? If you, you should probably clean & validate that data before you start using it. That can be a lot of work, so `cleaners` is here to help with:
 
 - Validation - Ensuring that the input data matches the expected format.
 - Cleaning - Inserting fallback values, parsing strings into Date objects, and so forth.
@@ -22,7 +22,7 @@ If features:
 This library contains a collection of composable `Cleaner` functions. A cleaner function validates some incoming data, and either returns it with the proper type or throws an exception. Here are some simple examples:
 
 ```typescript
-import { asDate, asString } from 'as-cleaned'
+import { asDate, asString } from 'cleaners'
 
 const a = asString('hey') // Returns the string 'hey'
 const b = asString(1) // Throws a TypeError
@@ -32,7 +32,7 @@ const c = asDate('2020-02-20') // Returns a Javascript Date object
 To handle objects, arrays, and other nested data types, this library includes some helpers for combining `Cleaner` functions together:
 
 ```typescript
-import { asArray, asObject, asOptional } from 'as-cleaned'
+import { asArray, asObject, asOptional } from 'cleaners'
 
 // Define a cleaner function for our custom object type:
 const asMessage = asObject({
@@ -64,12 +64,10 @@ In other words, not only does this library make it super-easy to write validatio
 
 ### Hand-written cleaners
 
-Since cleaners are just functions, you can easily create your own as well, which is useful if you need extra validation:
+Since cleaners are just functions, you can easily create your own as well, which is useful if you need extra data validation:
 
 ```typescript
-import type { Cleaner } from 'as-cleaned'
-
-const asEvenNumber: Cleaner<number> = raw => {
+function asEvenNumber(raw: any): number {
   if (typeof raw !== 'number' || raw % 2 !== 0) {
     throw new TypeError('Expected an even number')
   }
@@ -77,7 +75,16 @@ const asEvenNumber: Cleaner<number> = raw => {
 }
 ```
 
-You can pass this function to `asObject` or any of the others helpers, and it will work perfectly, including TypeScript & Flow return-type inference.
+Or extra data conversions:
+
+```typescript
+import { asString, Cleaner } from 'cleaners'
+import { base64 } from 'rfc4648'
+
+const asBase64Data: Cleaner<Uint8Array> = raw => base64.parse(asString(raw))
+```
+
+You can pass these functions to `asObject` or any of the others helpers, and they will work perfectly, including TypeScript & Flow return-type inference.
 
 ## Basic cleaners
 

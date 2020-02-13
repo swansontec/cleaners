@@ -1,9 +1,9 @@
 {
-  "name": "as-cleaned",
+  "name": "cleaners",
   "version": "0.1.0",
   "private": true,
   "description": "Cleans & validates untrusted data, with TypeScript & Flow support",
-  "repository": "https://www.github.com/swansontec/as-cleaned",
+  "repository": "https://www.github.com/swansontec/cleaners",
   "license": "MIT",
   "author": "William Swanson",
   "main": "lib/index.cjs.js",
