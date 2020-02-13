@@ -10,8 +10,16 @@
   "repository": "https://www.github.com/swansontec/cleaners",
   "license": "MIT",
   "author": "William Swanson",
+  "files": [
+    "/CHANGELOG.md",
+    "/lib/*",
+    "/package.json",
+    "/README.md",
+    "/src/*"
+  ],
   "main": "lib/index.cjs.js",
   "module": "lib/index.js",
+  "types": "lib/src/index.d.ts",
   "scripts": {
     "build.lib": "rollup -c",
     "build.types": "tsc",
