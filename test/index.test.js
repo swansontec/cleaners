@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
-/* global describe, it */
 
 import { expect } from 'chai'
+import { describe, it } from 'mocha'
 
 import {
   asArray,
@@ -15,7 +15,7 @@ import {
   asOptional,
   asString,
   asUndefined
-} from '../src/index'
+} from '../src/index.js'
 
 describe('asBoolean', function() {
   it('accepts only booleans', function() {

@@ -1,9 +1,6 @@
 {
   "include": [
-    "src/**/*.ts"
-  ],
-  "extension": [
-    ".ts"
+    "src/**/*.js"
   ],
   "require": [
     "sucrase/register"
