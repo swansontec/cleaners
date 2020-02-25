@@ -60,6 +60,27 @@ export function asArray(cleaner) {
 }
 
 /**
+ * Makes a cleaner that accepts an object with arbitrary keys
+ * and the given value type. Removes keys named `__proto__` for safety.
+ */
+export function asMap(cleaner) {
+  return function asMap(raw) {
+    if (raw == null || typeof raw !== 'object') {
+      throw new TypeError('Expected an object')
+    }
+
+    var out = {}
+    var keys = Object.keys(raw)
+    for (var i = 0; i < keys.length; ++i) {
+      var key = keys[i]
+      if (key === '__proto__') continue
+      out[key] = cleaner(raw[key])
+    }
+    return out
+  }
+}
+
+/**
  * Makes a cleaner that accepts an object with the given property types.
  */
 export function asObject(cleaner) {

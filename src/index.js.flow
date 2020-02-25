@@ -29,6 +29,16 @@ export function asArray<U: Function>(
 }
 
 /**
+ * Makes a cleaner that accepts an object with arbitrary keys
+ * and the given value type. Removes keys named `__proto__` for safety.
+ */
+export function asMap<U: Function>(
+  cleaner: U
+): Cleaner<{ [key: string]: $Call<ExtractReturnType, U> }> {
+  return raw => raw
+}
+
+/**
  * Makes a cleaner that accepts an object with the given property types.
  */
 export function asObject<U: { [key: string]: Function }>(

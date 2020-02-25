@@ -25,6 +25,14 @@ declare type ObjectJsonCleaner<O> = {
 export declare function asArray<T>(cleaner: Cleaner<T>): Cleaner<T[]>
 
 /**
+ * Makes a cleaner that accepts an object with arbitrary keys
+ * and the given value type. Removes keys named `__proto__` for safety.
+ */
+export declare function asMap<T>(
+  cleaner: Cleaner<T>
+): Cleaner<{ [key: string]: T }>
+
+/**
  * Makes a cleaner that accepts an object with the given property types.
  */
 export declare function asObject<O>(cleaner: ObjectJsonCleaner<O>): Cleaner<O>

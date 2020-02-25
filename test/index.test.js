@@ -8,6 +8,7 @@ import {
   asBoolean,
   asDate,
   asEither,
+  asMap,
   asNone,
   asNull,
   asNumber,
@@ -93,6 +94,18 @@ describe('asArray', function() {
     expect(asStringArray(['hey'])).deep.equals(['hey'])
     expect(() => asStringArray([1])).throws('Expected a string')
     expect(() => asStringArray({ length: 0 })).throws('Expected an array')
+  })
+})
+
+describe('asMap', function() {
+  it('accepts objects', function() {
+    const asNumberMap = asMap(asNumber)
+
+    expect(asNumberMap({ a: 1, b: 2 })).deep.equals({ a: 1, b: 2 })
+    const danger = JSON.parse('{ "a": 1, "b": 2, "__proto__": 3 }')
+    expect(asNumberMap(danger)).deep.equals({ a: 1, b: 2 })
+    expect(() => asNumberMap(null)).throws('Expected an object')
+    expect(() => asNumberMap({ a: false })).throws('Expected a number')
   })
 })
 

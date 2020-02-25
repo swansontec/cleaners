@@ -103,6 +103,7 @@ This library includes the following basic cleaner functions:
 Compound cleaners don't clean data directly, but they *create* cleaners that can handle the data type. This library includes a few:
 
 - `asArray`
+- `asMap`
 - `asObject`
 - `asOptional`
 - `asEither`
@@ -112,6 +113,15 @@ Compound cleaners don't clean data directly, but they *create* cleaners that can
 ```typescript
 // Makes a Cleaner<string[]>:
 const asStringList = asArray(asString)
+```
+
+`asMap` creates a cleaner for generic key / value objects. It accepts a single `Cleaner` that applies to each value within the object:
+
+```typescript
+// Makes a Cleaner<{ [key: string]: number }>:
+const asNumberMap = asMap(asNumber)
+const a = asNumberMap({ a: 1, b: 2 }) // Returns { a: 1, b: 2 }
+const a = asNumberMap({ a: false }) // Throws a TypeError
 ```
 
 `asObject` creates an object cleaner. `asObject` accepts object which describes the cleaner to build. The object's keys are property names, and the object's values are `Cleaner` functions to apply to those properties. The generated cleaner removes unknown properties for safety:
