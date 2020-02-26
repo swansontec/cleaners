@@ -1,5 +1,10 @@
 # cleaners
 
+## 0.1.4 (2020-02-25)
+
+- Fix the `asOptional` TypeScript definition broken in v0.1.3.
+- Test the type definitions so they won't break in the future.
+
 ## 0.1.3 (2020-02-24)
 
 - Add an `asMap` compound cleaner.
