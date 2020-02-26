@@ -21,6 +21,7 @@
   "module": "src/index.js",
   "types": "src/index.d.ts",
   "scripts": {
+    "build.flow": "flow",
     "build.lib": "rollup -c; cp src/index.js.flow lib",
     "build.types": "tsc",
     "clean": "rimraf lib",
@@ -50,6 +51,7 @@
     "eslint-plugin-promise": ">=4.2.1",
     "eslint-plugin-simple-import-sort": ">=4.0.0",
     "eslint-plugin-standard": ">=4.0.0",
+    "flow-bin": "^0.75.0",
     "husky": ">=3.0.0",
     "lint-staged": ">=9.0.0",
     "mocha": "^6.2.2",
