@@ -39,16 +39,20 @@ export declare function asObject<O>(cleaner: ObjectJsonCleaner<O>): Cleaner<O>
 
 /**
  * Unpacks a value that may be void or null,
- * returning a fallback value if missing.
+ * returning `undefined` if missing.
  */
 export declare function asOptional<T>(
   cleaner: Cleaner<T>
 ): Cleaner<T | undefined>
 
-export declare function asOptional<T, F>(
+/**
+ * Unpacks a value that may be void or null,
+ * returning a fallback value if missing.
+ */
+export declare function asOptional<T>(
   cleaner: Cleaner<T>,
-  fallback: F
-): Cleaner<T | F>
+  fallback: T
+): Cleaner<T>
 
 /**
  * Makes a cleaner that accepts either of the given types.

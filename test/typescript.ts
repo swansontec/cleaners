@@ -26,7 +26,7 @@ interface Expected {
   array: string[]
   map: { [key: string]: number }
   optional1: string | undefined
-  optional2: string | number
+  optional2: string
   either: string | number
 }
 
@@ -41,7 +41,7 @@ const cleaner = asObject({
   array: asArray(asString),
   map: asMap(asNumber),
   optional1: asOptional(asString),
-  optional2: asOptional(asString, 0),
+  optional2: asOptional(asString, ''),
   either: asEither(asString, asNumber)
 })
 type Actual = ReturnType<typeof cleaner>
