@@ -49,10 +49,12 @@ try {
 } catch (error) {}
 ```
 
-Thanks to our TypeScript & Flow support, the custom `asMessage` function has a detailed return type. The means you will get the same error-checking & auto-completion as if you had entered the following type declaration by hand:
+### Automatic type definitions
+
+Thanks to our TypeScript & Flow support, the custom `asMessage` function above has a detailed return type. The means you will get the same error-checking & auto-completion as if you had entered the following type declaration by hand:
 
 ```typescript
-declare function asMessage(raw: any): {
+interface Message {
   text: string
   recipients: string[]
   seenOn: Date | undefined
@@ -60,7 +62,15 @@ declare function asMessage(raw: any): {
 }
 ```
 
-In other words, not only does this library make it super-easy to write validation functions, but it also gives you the matching TypeScript / Flow types for free!
+To grab these auto-generated types, just use code like the following:
+
+```typescript
+// Typescript:
+type Message = ReturnType<typeof asMessage>
+
+// Flow:
+type Message = $Call<typeof asMessage>
+```
 
 ### Hand-written cleaners
 
