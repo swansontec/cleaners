@@ -45,7 +45,7 @@ const cleaner = asObject({
   optional2: asOptional(asString, 0),
   either: asEither(asString, asNumber)
 })
-type Actual = $Call<typeof cleaner, any>
+type Actual = $Call<typeof cleaner>
 
 // Check that Actual and Expected are equivalent in both directions:
 const checkForward = (value: Actual): Expected => value

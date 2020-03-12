@@ -17,14 +17,12 @@ export const asDate: Cleaner<Date> = raw => raw
 
 // nested types ----------------------------------------------------------------
 
-type ExtractReturnType = <V>(() => V) => V
+type ExtractReturnType = <R>(() => R) => R
 
 /**
  * Makes a cleaner that accepts an array with the given item type.
  */
-export function asArray<U: Function>(
-  Cleaner: U
-): Cleaner<$Call<ExtractReturnType, U>[]> {
+export function asArray<T>(cleaner: (raw: any) => T): Cleaner<T[]> {
   return raw => raw
 }
 
@@ -32,18 +30,18 @@ export function asArray<U: Function>(
  * Makes a cleaner that accepts an object with arbitrary keys
  * and the given value type. Removes keys named `__proto__` for safety.
  */
-export function asMap<U: Function>(
-  cleaner: U
-): Cleaner<{ [key: string]: $Call<ExtractReturnType, U> }> {
+export function asMap<T>(
+  cleaner: (raw: any) => T
+): Cleaner<{ [key: string]: T }> {
   return raw => raw
 }
 
 /**
  * Makes a cleaner that accepts an object with the given property types.
  */
-export function asObject<U: { [key: string]: Function }>(
-  Cleaner: U
-): Cleaner<$ObjMap<U, ExtractReturnType>> {
+export function asObject<O: { [key: string]: Function }>(
+  cleaner: O
+): Cleaner<$ObjMap<O, ExtractReturnType>> {
   return raw => raw
 }
 
@@ -51,19 +49,19 @@ export function asObject<U: { [key: string]: Function }>(
  * Unpacks a value that may be void or null,
  * returning a fallback value if missing.
  */
-export function asOptional<U: Function, F>(
-  Cleaner: U,
-  fallback: F
-): Cleaner<$Call<ExtractReturnType, U> | F> {
+export function asOptional<T, U>(
+  cleaner: (raw: any) => T,
+  fallback: U
+): Cleaner<T | U> {
   return raw => raw
 }
 
 /**
  * Makes a cleaner that accepts either of the given types.
  */
-export function asEither<A: Function, B: Function>(
-  a: A,
-  b: B
-): Cleaner<$Call<ExtractReturnType, A> | $Call<ExtractReturnType, B>> {
+export function asEither<A, B>(
+  a: (raw: any) => A,
+  b: (raw: any) => B
+): Cleaner<A | B> {
   return raw => raw
 }
