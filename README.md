@@ -15,7 +15,7 @@ If features:
 
 - Zero external dependencies
 - 100% test coverage
-- 0.5K minified + gzip
+- 0.7K minified + gzip
 
 ## Overview
 

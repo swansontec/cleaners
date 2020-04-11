@@ -1,5 +1,10 @@
 # cleaners
 
+## 0.2.0 (2020-04-11)
+
+- When a nested cleaner throws an error, add location information to the message.
+- The `asOptional` fallback type must match the main type (for TypeScript only).
+
 ## 0.1.4 (2020-02-25)
 
 - Fix the `asOptional` TypeScript definition broken in v0.1.3.
