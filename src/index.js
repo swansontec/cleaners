@@ -141,6 +141,6 @@ export function asEither(a, b) {
 
 function locateError(error, path) {
   if (error == null || typeof error.message !== 'string') return
-  error.message = error.message.replace(/ at (.+])$|$/, ' at ' + path + '$1')
+  error.message = error.message.replace(/ at |$/, ' at ' + path)
   return error
 }
