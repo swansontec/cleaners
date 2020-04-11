@@ -53,9 +53,15 @@ export function asArray(cleaner) {
       throw new TypeError('Expected an array')
     }
 
-    var out = []
-    for (var i = 0; i < raw.length; ++i) out[i] = cleaner(raw[i])
-    return out
+    try {
+      var out = []
+      for (var i = 0; i < raw.length; ++i) {
+        out[i] = cleaner(raw[i])
+      }
+      return out
+    } catch (error) {
+      throw locateError(error, '[' + i + ']')
+    }
   }
 }
 
@@ -69,14 +75,18 @@ export function asMap(cleaner) {
       throw new TypeError('Expected an object')
     }
 
-    var out = {}
     var keys = Object.keys(raw)
-    for (var i = 0; i < keys.length; ++i) {
-      var key = keys[i]
-      if (key === '__proto__') continue
-      out[key] = cleaner(raw[key])
+    try {
+      var out = {}
+      for (var i = 0; i < keys.length; ++i) {
+        var key = keys[i]
+        if (key === '__proto__') continue
+        out[key] = cleaner(raw[key])
+      }
+      return out
+    } catch (error) {
+      throw locateError(error, '[' + JSON.stringify(key) + ']')
     }
-    return out
   }
 }
 
@@ -84,14 +94,23 @@ export function asMap(cleaner) {
  * Makes a cleaner that accepts an object with the given property types.
  */
 export function asObject(cleaner) {
+  var keys = Object.keys(cleaner)
+
   return function asObject(raw) {
     if (raw == null || typeof raw !== 'object') {
       throw new TypeError('Expected an object')
     }
 
-    var out = {}
-    for (var k in cleaner) out[k] = cleaner[k](raw[k])
-    return out
+    try {
+      var out = {}
+      for (var i = 0; i < keys.length; ++i) {
+        var key = keys[i]
+        out[key] = cleaner[key](raw[key])
+      }
+      return out
+    } catch (error) {
+      throw locateError(error, '.' + key)
+    }
   }
 }
 
@@ -116,4 +135,12 @@ export function asEither(a, b) {
       return b(raw)
     }
   }
+}
+
+// helpers ---------------------------------------------------------------------
+
+function locateError(error, path) {
+  if (error == null || typeof error.message !== 'string') return
+  error.message = error.message.replace(/ at (.+])$|$/, ' at ' + path + '$1')
+  return error
 }
