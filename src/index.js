@@ -140,7 +140,8 @@ export function asEither(a, b) {
 // helpers ---------------------------------------------------------------------
 
 function locateError(error, path) {
-  if (error == null || typeof error.message !== 'string') return
-  error.message = error.message.replace(/ at |$/, ' at ' + path)
+  if (error != null && typeof error.message === 'string') {
+    error.message = error.message.replace(/ at |$/, ' at ' + path)
+  }
   return error
 }
