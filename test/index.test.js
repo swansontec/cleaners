@@ -15,7 +15,8 @@ import {
   asObject,
   asOptional,
   asString,
-  asUndefined
+  asUndefined,
+  asUnknown
 } from '../src/index.js'
 
 describe('asBoolean', function () {
@@ -159,6 +160,16 @@ describe('asEither', function () {
     expect(asUnit(1)).equals(1)
     expect(asUnit('1em')).equals('1em')
     expect(() => asUnit(null)).throws(TypeError, 'Expected a string')
+  })
+})
+
+describe('asUnknown', function () {
+  it('accepts anything', function () {
+    const object = {}
+
+    expect(asUnknown()).equals(undefined)
+    expect(asUnknown(1)).equals(1)
+    expect(asUnknown(object)).equals(object)
   })
 })
 

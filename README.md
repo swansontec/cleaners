@@ -107,6 +107,7 @@ This library includes the following basic cleaner functions:
 - `asUndefined` - accepts & returns `undefined`.
 - `asNone` - accepts & returns `undefined`, but accepts `null` as well.
 - `asDate` - accepts & returns a `Date`, but parses strings if needed.
+- `asUnknown` - accepts anything.
 
 ## Compound cleaners
 

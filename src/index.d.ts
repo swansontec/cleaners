@@ -12,6 +12,7 @@ export declare const asString: Cleaner<string>
 export declare const asUndefined: Cleaner<undefined>
 export declare const asNone: Cleaner<undefined>
 export declare const asDate: Cleaner<Date>
+export declare const asUnknown: Cleaner<unknown>
 
 // nested types ----------------------------------------------------------------
 

@@ -42,6 +42,10 @@ export function asDate(raw) {
   return out
 }
 
+export function asUnknown(raw) {
+  return raw
+}
+
 // nested types ----------------------------------------------------------------
 
 /**

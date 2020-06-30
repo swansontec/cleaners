@@ -14,6 +14,7 @@ export const asString: Cleaner<string> = raw => raw
 export const asUndefined: Cleaner<void> = raw => raw
 export const asNone: Cleaner<void> = raw => raw
 export const asDate: Cleaner<Date> = raw => raw
+export const asUnknown: Cleaner<mixed> = raw => raw
 
 // nested types ----------------------------------------------------------------
 

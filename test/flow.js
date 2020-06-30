@@ -13,7 +13,8 @@ import {
   asObject,
   asOptional,
   asString,
-  asUndefined
+  asUndefined,
+  asUnknown
 } from '../src/index'
 
 type Expected = {
@@ -28,7 +29,8 @@ type Expected = {
   map: { [key: string]: number },
   optional1: string | void,
   optional2: string,
-  either: string | number
+  either: string | number,
+  unknown: mixed
 }
 
 const cleaner = asObject({
@@ -43,7 +45,8 @@ const cleaner = asObject({
   map: asMap(asNumber),
   optional1: asOptional(asString),
   optional2: asOptional(asString, ''),
-  either: asEither(asString, asNumber)
+  either: asEither(asString, asNumber),
+  unknown: asUnknown
 })
 type Actual = $Call<typeof cleaner>
 

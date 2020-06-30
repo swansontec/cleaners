@@ -12,7 +12,8 @@ import {
   asObject,
   asOptional,
   asString,
-  asUndefined
+  asUndefined,
+  asUnknown
 } from '../src/index'
 
 interface Expected {
@@ -28,6 +29,7 @@ interface Expected {
   optional1: string | undefined
   optional2: string
   either: string | number
+  unknown: unknown
 }
 
 const cleaner = asObject({
@@ -42,7 +44,8 @@ const cleaner = asObject({
   map: asMap(asNumber),
   optional1: asOptional(asString),
   optional2: asOptional(asString, ''),
-  either: asEither(asString, asNumber)
+  either: asEither(asString, asNumber),
+  unknown: asUnknown
 })
 type Actual = ReturnType<typeof cleaner>
 
