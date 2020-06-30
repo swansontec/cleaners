@@ -1,5 +1,10 @@
 # cleaners
 
+## 0.2.1 (2020-06-30)
+
+- Add an `asUnknown` cleaner.
+- Improve error handling.
+
 ## 0.2.0 (2020-04-11)
 
 - When a nested cleaner throws an error, add location information to the message.
