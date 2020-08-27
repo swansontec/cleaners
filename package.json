@@ -10,6 +10,13 @@
   "repository": "https://www.github.com/swansontec/cleaners",
   "license": "MIT",
   "author": "William Swanson",
+  "exports": {
+    "import": "./lib/index.mjs",
+    "require": "./lib/index.js"
+  },
+  "main": "./lib/index.js",
+  "module": "./src/index.js",
+  "types": "src/index.d.ts",
   "files": [
     "/CHANGELOG.md",
     "/lib/*",
@@ -17,9 +24,6 @@
     "/README.md",
     "/src/*"
   ],
-  "main": "lib/index.js",
-  "module": "src/index.js",
-  "types": "src/index.d.ts",
   "scripts": {
     "build.flow": "flow",
     "build.lib": "rollup -c; cp src/index.js.flow lib",
