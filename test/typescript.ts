@@ -5,6 +5,7 @@ import {
   asBoolean,
   asDate,
   asEither,
+  asJSON,
   asMap,
   asNone,
   asNull,
@@ -20,6 +21,7 @@ interface Expected {
   array: string[]
   date: Date
   either: string | number
+  json: number[]
   map: { [key: string]: number }
   optional1: string | undefined
   optional2: string
@@ -38,6 +40,7 @@ const cleaner = asObject({
   array: asArray(asString),
   date: asDate,
   either: asEither(asString, asNumber),
+  json: asJSON(asArray(asNumber)),
   map: asMap(asNumber),
   optional1: asOptional(asString),
   optional2: asOptional(asString, ''),

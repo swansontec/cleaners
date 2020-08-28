@@ -15,7 +15,7 @@ If features:
 
 - Zero external dependencies
 - 100% test coverage
-- 0.7K minified + gzip
+- 0.8K minified + gzip
 
 ## Overview
 
@@ -62,7 +62,7 @@ interface Message {
 }
 ```
 
-To grab these auto-generated types, just use code like the following:
+If you want to give names to these automatically-created types, use code like the following:
 
 ```typescript
 // Typescript:
@@ -101,23 +101,24 @@ You can pass these functions to `asObject` or any of the others helpers, and the
 This library includes the following basic cleaner functions:
 
 - `asBoolean` - accepts & returns a `boolean`.
-- `asNull` - accepts & returns `null`.
 - `asNumber` - accepts & returns a `number`.
 - `asString` - accepts & returns a `string`.
-- `asUndefined` - accepts & returns `undefined`.
-- `asNone` - accepts & returns `undefined`, but accepts `null` as well.
 - `asDate` - accepts & returns a `Date`, but parses strings if needed.
+- `asNull` - accepts & returns `null`.
+- `asNone` - accepts & returns `undefined`, but accepts `null` as well.
+- `asUndefined` - accepts & returns `undefined`.
 - `asUnknown` - accepts anything.
 
 ## Compound cleaners
 
-Compound cleaners don't clean data directly, but they *create* cleaners that can handle the data type. This library includes a few:
+Compound cleaners don't clean data directly, but they _create_ cleaners that can handle the data type. This library includes a few:
 
-- `asArray`
-- `asMap`
-- `asObject`
-- `asOptional`
-- `asEither`
+- `asArray` - Builds an array cleaner.
+- `asObject` - Builds a cleaner for objects with a specific shape.
+- `asMap` - Builds a cleaner for an object used as key / value map.
+- `asOptional` - Builds a cleaner for an item that might be undefined or null.
+- `asEither` - Builds a cleaner for an item that might have multiple types.
+- `asJSON` - Builds a cleaner for JSON strings.
 
 `asArray` accepts a single `Cleaner` that applies to each item within the array:
 
@@ -168,4 +169,17 @@ const asUnit = asEither(asString, asNumber)
 const a = asUnit(1) // returns 1
 const b = asUnit('1rem') // returns '1rem'
 const c = asUnit(null) // Throws a TypeError
+```
+
+`asJSON` accepts a string, which it parses as JSON and passes to the nested cleaner:
+
+```typescript
+// Makes a Cleaner<string[]>:
+const asNamesFile = asJSON(asArray(asString))
+
+const a = asNamesFile('["jack","jill"]') // returns ['jack', 'jill']
+const b = asNamesFile([]) // TypeError: Expected a string
+
+// Returns an array of strings, right from disk:
+const names = asNamesFile(fs.readFileSync('names.json', 'utf8'))
 ```

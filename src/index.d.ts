@@ -62,3 +62,8 @@ export declare function asEither<A, B>(
   a: Cleaner<A>,
   b: Cleaner<B>
 ): Cleaner<A | B>
+
+/**
+ * Makes a cleaner that parses & validates JSON strings.
+ */
+export declare function asJSON<T>(cleaner: Cleaner<T>): Cleaner<T>

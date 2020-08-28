@@ -118,6 +118,17 @@ export function asObject(cleaner) {
   }
 }
 
+export function asJSON(cleaner) {
+  return function asJSON(raw) {
+    var value = JSON.parse(asString(raw))
+    try {
+      return cleaner(value)
+    } catch (error) {
+      throw locateError(error, 'JSON.parse(*)')
+    }
+  }
+}
+
 /**
  * Unpacks a value that may be void or null,
  * returning a fallback value if missing.
