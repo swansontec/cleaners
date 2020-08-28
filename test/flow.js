@@ -37,7 +37,7 @@ type Expected = {
   unknown: mixed
 }
 
-const cleaner = asObject({
+export const cleaner = asObject({
   array: asArray(asString),
   date: asDate,
   either: asEither(asString, asNumber),
