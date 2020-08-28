@@ -16,13 +16,14 @@ describe('locateError', function () {
       expect(error.message).equals(
         'Expected a number at .map["odd \\"item\\""][0]'
       )
+      expect(typeof error.addStep).equals('function')
     }
   })
 
   it('avoids non-error objects', function () {
     function asBomb() {
       // eslint-disable-next-line no-throw-literal
-      throw null
+      throw { message: 'boom' }
     }
     const asDemoObject = asObject({
       payload: asBomb
@@ -33,6 +34,8 @@ describe('locateError', function () {
       throw new Error('Expecting an error')
     } catch (error) {
       expect(error).not.instanceOf(Error)
+      expect(error.message).equals('boom')
+      expect(typeof error.addStep).equals('undefined')
     }
   })
 })

@@ -64,7 +64,7 @@ export function asArray(cleaner) {
       }
       return out
     } catch (error) {
-      throw locateError(error, '[' + i + ']')
+      throw locateError(error, '*[' + i + ']')
     }
   }
 }
@@ -89,7 +89,7 @@ export function asMap(cleaner) {
       }
       return out
     } catch (error) {
-      throw locateError(error, '[' + JSON.stringify(key) + ']')
+      throw locateError(error, '*[' + JSON.stringify(key) + ']')
     }
   }
 }
@@ -113,7 +113,7 @@ export function asObject(cleaner) {
       }
       return out
     } catch (error) {
-      throw locateError(error, '.' + key)
+      throw locateError(error, '*.' + key)
     }
   }
 }
@@ -143,9 +143,17 @@ export function asEither(a, b) {
 
 // helpers ---------------------------------------------------------------------
 
-function locateError(error, path) {
-  if (error != null && typeof error.message === 'string') {
-    error.message = error.message.replace(/ at |$/, ' at ' + path)
+function locateError(error, step) {
+  if (error instanceof Error) {
+    if (typeof error.addStep !== 'function') {
+      var message = error.message
+      var steps = '*'
+      error.addStep = function (step) {
+        steps = steps.replace('*', step)
+        error.message = message + ' at ' + steps.replace('*', '')
+      }
+    }
+    error.addStep(step)
   }
   return error
 }
