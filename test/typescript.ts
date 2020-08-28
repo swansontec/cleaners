@@ -17,34 +17,38 @@ import {
 } from '../src/index'
 
 interface Expected {
-  boolean: boolean
-  number: number
-  string: string
-  null: null
-  undefined: undefined
-  none: undefined
-  date: Date
   array: string[]
+  date: Date
+  either: string | number
   map: { [key: string]: number }
   optional1: string | undefined
   optional2: string
-  either: string | number
+
+  // Primitives:
+  boolean: boolean
+  none: undefined
+  null: null
+  number: number
+  string: string
+  undefined: undefined
   unknown: unknown
 }
 
 const cleaner = asObject({
-  boolean: asBoolean,
-  number: asNumber,
-  string: asString,
-  null: asNull,
-  undefined: asUndefined,
-  none: asNone,
-  date: asDate,
   array: asArray(asString),
+  date: asDate,
+  either: asEither(asString, asNumber),
   map: asMap(asNumber),
   optional1: asOptional(asString),
   optional2: asOptional(asString, ''),
-  either: asEither(asString, asNumber),
+
+  // Primitives:
+  boolean: asBoolean,
+  none: asNone,
+  null: asNull,
+  number: asNumber,
+  string: asString,
+  undefined: asUndefined,
   unknown: asUnknown
 })
 type Actual = ReturnType<typeof cleaner>
