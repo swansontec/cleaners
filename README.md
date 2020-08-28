@@ -136,7 +136,7 @@ const a = asNumberMap({ a: 1, b: 2 }) // Returns { a: 1, b: 2 }
 const a = asNumberMap({ a: false }) // Throws a TypeError
 ```
 
-`asObject` creates an object cleaner. `asObject` accepts object which describes the cleaner to build. The object's keys are property names, and the object's values are `Cleaner` functions to apply to those properties. The generated cleaner removes unknown properties for safety:
+`asObject` accepts a "shape" object, and builds a matching cleaner. For every property in the shape object, the cleaner will grab the matching property off of the input object, clean it, and add it to the output. The cleaner won't copy any unknown properties:
 
 ```typescript
 // Makes a Cleaner<{ key: string }>:
@@ -144,6 +144,16 @@ const asThing = asObject({ key: asString })
 
 // Returns { key: 'string' }, with b removed:
 const x = asThing({ key: 'string', b: false })
+```
+
+The cleaners returned from `asObject` also have a `shape` property. This makes it possible to build bigger object cleaners out of smaller object cleaners:
+
+```typescript
+const asBiggerThing = asObject({
+  // Give BiggerThing has all the properties of Thing:
+  ...asThing.shape,
+  extraProperty: asNumber
+})
 ```
 
 `asOptional` creates a cleaner that handles optional values. If the value to clean is `null` or `undefined`, it returns the fallback (which defaults to `undefined`). Otherwise, it cleans the value & returns it like normal:

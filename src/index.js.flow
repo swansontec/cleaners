@@ -38,7 +38,7 @@ declare export function asMap<T>(
  */
 declare export function asObject<O: { [key: string]: Function }>(
   cleaner: O
-): Cleaner<$ObjMap<O, ExtractReturnType>>
+): Cleaner<$ObjMap<O, ExtractReturnType>> & { shape: O }
 
 /**
  * Unpacks a value that may be void or null,

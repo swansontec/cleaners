@@ -97,10 +97,10 @@ export function asMap(cleaner) {
 /**
  * Makes a cleaner that accepts an object with the given property types.
  */
-export function asObject(cleaner) {
-  var keys = Object.keys(cleaner)
+export function asObject(shape) {
+  var keys = Object.keys(shape)
 
-  return function asObject(raw) {
+  function asObject(raw) {
     if (raw == null || typeof raw !== 'object') {
       throw new TypeError('Expected an object')
     }
@@ -109,13 +109,15 @@ export function asObject(cleaner) {
       var out = {}
       for (var i = 0; i < keys.length; ++i) {
         var key = keys[i]
-        out[key] = cleaner[key](raw[key])
+        out[key] = shape[key](raw[key])
       }
       return out
     } catch (error) {
       throw locateError(error, '*.' + key)
     }
   }
+  asObject.shape = shape
+  return asObject
 }
 
 export function asJSON(cleaner) {
