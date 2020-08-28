@@ -7,14 +7,14 @@ export type Cleaner<T> = (raw: any) => T
 
 // simple types --------------------------------------------------------------
 
-export const asBoolean: Cleaner<boolean> = raw => raw
-export const asNull: Cleaner<null> = raw => raw
-export const asNumber: Cleaner<number> = raw => raw
-export const asString: Cleaner<string> = raw => raw
-export const asUndefined: Cleaner<void> = raw => raw
-export const asNone: Cleaner<void> = raw => raw
-export const asDate: Cleaner<Date> = raw => raw
-export const asUnknown: Cleaner<mixed> = raw => raw
+declare export var asBoolean: Cleaner<boolean>
+declare export var asDate: Cleaner<Date>
+declare export var asNumber: Cleaner<number>
+declare export var asString: Cleaner<string>
+declare export var asNone: Cleaner<void>
+declare export var asNull: Cleaner<null>
+declare export var asUndefined: Cleaner<void>
+declare export var asUnknown: Cleaner<mixed>
 
 // nested types ----------------------------------------------------------------
 
@@ -23,46 +23,36 @@ type ExtractReturnType = <R>(() => R) => R
 /**
  * Makes a cleaner that accepts an array with the given item type.
  */
-export function asArray<T>(cleaner: (raw: any) => T): Cleaner<T[]> {
-  return raw => raw
-}
+declare export function asArray<T>(cleaner: (raw: any) => T): Cleaner<T[]>
 
 /**
  * Makes a cleaner that accepts an object with arbitrary keys
  * and the given value type. Removes keys named `__proto__` for safety.
  */
-export function asMap<T>(
+declare export function asMap<T>(
   cleaner: (raw: any) => T
-): Cleaner<{ [key: string]: T }> {
-  return raw => raw
-}
+): Cleaner<{ [key: string]: T }>
 
 /**
  * Makes a cleaner that accepts an object with the given property types.
  */
-export function asObject<O: { [key: string]: Function }>(
+declare export function asObject<O: { [key: string]: Function }>(
   cleaner: O
-): Cleaner<$ObjMap<O, ExtractReturnType>> {
-  return raw => raw
-}
+): Cleaner<$ObjMap<O, ExtractReturnType>>
 
 /**
  * Unpacks a value that may be void or null,
  * returning a fallback value if missing.
  */
-export function asOptional<T, U>(
+declare export function asOptional<T, U>(
   cleaner: (raw: any) => T,
   fallback: U
-): Cleaner<T | U> {
-  return raw => raw
-}
+): Cleaner<T | U>
 
 /**
  * Makes a cleaner that accepts either of the given types.
  */
-export function asEither<A, B>(
+declare export function asEither<A, B>(
   a: (raw: any) => A,
   b: (raw: any) => B
-): Cleaner<A | B> {
-  return raw => raw
-}
+): Cleaner<A | B>
