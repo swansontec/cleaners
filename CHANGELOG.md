@@ -1,5 +1,12 @@
 # cleaners
 
+## 0.3.0 (2020-08-28)
+
+- Add an `asJSON` cleaner.
+- Expose the `asObject` input shape as a `shape` property on the returned cleaner.
+- Use an `Error.addStep` method to build up error locations, instead of fragile search & replace. Several cleaners now add a default `addStep` methods to `Error` objects do not have one.
+- Add a native module entry point for Node 14.
+
 ## 0.2.1 (2020-06-30)
 
 - Add an `asUnknown` cleaner.
