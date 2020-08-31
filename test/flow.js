@@ -24,6 +24,7 @@ type Expected = {
   either: string | number,
   json: number[],
   map: { [key: string]: number },
+  object: { when: Date },
   optional1: string | void,
   optional2: string,
 
@@ -43,6 +44,7 @@ export const cleaner = asObject({
   either: asEither(asString, asNumber),
   json: asJSON(asArray(asNumber)),
   map: asMap(asNumber),
+  object: asObject({ when: asDate }),
   optional1: asOptional(asString),
   optional2: asOptional(asString, ''),
 

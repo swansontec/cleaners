@@ -16,8 +16,12 @@ export declare const asUnknown: Cleaner<unknown>
 
 // nested types ----------------------------------------------------------------
 
-declare type ObjectShape<O> = {
-  [T in keyof O]: Cleaner<O[T]>
+declare type ObjectShape<T> = {
+  [K in keyof T]: Cleaner<T[K]>
+}
+
+declare type ObjectCleaner<T> = Cleaner<T> & {
+  readonly shape: ObjectShape<T>
 }
 
 /**
@@ -36,9 +40,7 @@ export declare function asMap<T>(
 /**
  * Makes a cleaner that accepts an object with the given property types.
  */
-export declare function asObject<O>(
-  shape: ObjectShape<O>
-): Cleaner<O> & { shape: ObjectShape<O> }
+export declare function asObject<T>(shape: ObjectShape<T>): ObjectCleaner<T>
 
 /**
  * Unpacks a value that may be void or null,

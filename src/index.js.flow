@@ -18,7 +18,11 @@ declare export var asUnknown: Cleaner<mixed>
 
 // nested types ----------------------------------------------------------------
 
-type ExtractReturnType = <R>(() => R) => R
+type ObjectCleaner<Shape> = Cleaner<
+  $ObjMap<Shape, <T>(cleaner: () => T) => T>
+> & {
+  +shape: Shape
+}
 
 /**
  * Makes a cleaner that accepts an array with the given item type.
@@ -36,11 +40,9 @@ declare export function asMap<T>(
 /**
  * Makes a cleaner that accepts an object with the given property types.
  */
-declare export function asObject<O: { [key: string]: Function }>(
-  cleaner: O
-): Cleaner<$ObjMap<O, ExtractReturnType>> & {
-  shape: $ObjMap<O, <R>(r: R) => R> // No-op to make Flow happy.
-}
+declare export function asObject<Shape: { [key: string]: Function }>(
+  shape: Shape
+): ObjectCleaner<$Diff<$Exact<Shape>, {||}>> // Dummy Diff to help exports work
 
 /**
  * Unpacks a value that may be void or null,
