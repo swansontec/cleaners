@@ -18,10 +18,11 @@ function mjs() {
       for (const fileName of Object.keys(bundle)) {
         const chunk = bundle[fileName]
         if (chunk.type !== 'chunk' || !chunk.isEntry) continue
+        const names = chunk.exports.join(',\n  ')
         this.emitFile({
           type: 'asset',
           fileName: fileName.replace(/js$/, 'mjs'),
-          source: `export { ${chunk.exports.join(', ')} } from './${fileName}'`
+          source: `import cjs from './${fileName}';\n\nexport const {\n  ${names}\n} = cjs;\n`
         })
       }
     }
