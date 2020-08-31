@@ -15,8 +15,8 @@
     "require": "./lib/index.js"
   },
   "main": "./lib/index.js",
-  "module": "./src/index.js",
-  "types": "src/index.d.ts",
+  "module": "./lib/disklet.js",
+  "types": "./src/index.d.ts",
   "files": [
     "/CHANGELOG.md",
     "/lib/*",
@@ -31,12 +31,13 @@
     "clean": "rimraf lib",
     "fix": "npm run lint -- --fix",
     "lint": "eslint --ext .js,.ts .",
+    "precommit": "lint-staged && npm-run-all -p test build.*",
     "prepare": "npm-run-all clean -p build.*",
     "test": "nyc mocha 'test/**/*.test.js'"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && yarn test && yarn prepare"
+      "pre-commit": "npm run precommit"
     }
   },
   "lint-staged": {

@@ -3,5 +3,5 @@
     "noEmit": true,
     "strict": true
   },
-  "exclude": ["lib"]
+  "exclude": ["node_modules", "lib"]
 }
