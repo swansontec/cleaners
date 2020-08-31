@@ -1,5 +1,10 @@
 # cleaners
 
+## 0.3.1 (2020-08-31)
+
+- fix: Stop the Node 14 module entry point from instantly erroring.
+- fix: Adjust the object cleaner type definitions to give better tooltips & errors.
+
 ## 0.3.0 (2020-08-28)
 
 - Add an `asJSON` cleaner.
