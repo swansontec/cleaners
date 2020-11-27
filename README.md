@@ -118,6 +118,7 @@ Compound cleaners don't clean data directly, but they _create_ cleaners that can
 - `asMap` - Builds a cleaner for an object used as key / value map.
 - `asOptional` - Builds a cleaner for an item that might be undefined or null.
 - `asEither` - Builds a cleaner for an item that might have multiple types.
+- `asMaybe` - Builds a cleaner that quietly ignores invalid data.
 - `asJSON` - Builds a cleaner for JSON strings.
 
 `asArray` accepts a single `Cleaner` that applies to each item within the array:
@@ -180,6 +181,34 @@ const a = asUnit(1) // returns 1
 const b = asUnit('1rem') // returns '1rem'
 const c = asUnit(null) // Throws a TypeError
 ```
+
+`asMaybe` creates a cleaner that doesn't throw on an invalid type. It tries the cleaner, and if that throws an exception, it will return undefined instead:
+
+```typescript
+// Makes a Cleaner<string | undefined>:
+const asMaybeString = asMaybe(asString)
+
+const a = asMaybe('Valid string') // returns 'Valid string'
+const b = asMaybe(23) // returns undefined
+const c = asMaybe(null) // returns undefined
+```
+
+This cleaner is useful as a type guard on your data:
+
+```typescript
+const pizza = asMaybe(asPizza)(obj)
+const salad = asMaybe(asSalad)(obj)
+
+if (pizza != null) {
+  // It's a pizza
+} else if (salad != null) {
+  // It's a salad
+} else {
+  // It's neither
+}
+```
+
+This type will silence all exceptions from the cleaner(s) it composes. Only use on types for which you do not care why a value is not valid.
 
 `asJSON` accepts a string, which it parses as JSON and passes to the nested cleaner:
 

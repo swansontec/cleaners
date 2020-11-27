@@ -154,6 +154,18 @@ export function asEither(a, b) {
   }
 }
 
+/**
+ * Makes a cleaner that accepts any data and returns the cleaned data from the
+ * given cleaner or undefined if cleaner throws.
+ */
+export function asMaybe(cleaner) {
+  return function asMaybe(raw) {
+    try {
+      return cleaner(raw)
+    } catch (e) {}
+  }
+}
+
 // helpers ---------------------------------------------------------------------
 
 function locateError(error, step) {
