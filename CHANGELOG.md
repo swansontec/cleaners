@@ -1,5 +1,9 @@
 # cleaners
 
+## 0.3.2 (2020-08-31)
+
+- Add an `asMaybe` cleaner, which turns invalid data into `undefined`.
+
 ## 0.3.1 (2020-08-31)
 
 - fix: Stop the Node 14 module entry point from instantly erroring.
