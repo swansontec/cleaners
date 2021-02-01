@@ -8,7 +8,7 @@ import { asArray, asDate, asJSON } from '../../src/index.js'
 describe('asJSON', function () {
   const asDatesFile = asJSON(asArray(asDate))
 
-  it('accepts-JSON strings', function () {
+  it('accepts JSON strings', function () {
     expect(asDatesFile('["2020-02-20"]')).deep.equals([new Date('2020-02-20')])
   })
 
