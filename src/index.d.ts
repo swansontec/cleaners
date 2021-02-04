@@ -3,6 +3,17 @@
  */
 export declare type Cleaner<T> = (raw: any) => T
 
+declare type ObjectShape<T> = {
+  [K in keyof T]: Cleaner<T[K]>
+}
+
+/**
+ * A cleaner, but with an extra `shape` property:
+ */
+export declare type ObjectCleaner<T> = Cleaner<T> & {
+  readonly shape: ObjectShape<T>
+}
+
 // simple types --------------------------------------------------------------
 
 export declare const asBoolean: Cleaner<boolean>
@@ -15,14 +26,6 @@ export declare const asDate: Cleaner<Date>
 export declare const asUnknown: Cleaner<unknown>
 
 // nested types ----------------------------------------------------------------
-
-declare type ObjectShape<T> = {
-  [K in keyof T]: Cleaner<T[K]>
-}
-
-declare type ObjectCleaner<T> = Cleaner<T> & {
-  readonly shape: ObjectShape<T>
-}
 
 /**
  * Makes a cleaner that accepts an array with the given item type.

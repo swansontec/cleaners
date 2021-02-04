@@ -5,6 +5,13 @@
  */
 export type Cleaner<T> = (raw: any) => T
 
+/**
+ * A cleaner, but with an extra `shape` property:
+ */
+export type ObjectCleaner<T> = Cleaner<T> & {
+  +shape: $ObjMap<T, <T>(type: T) => Cleaner<T>>
+}
+
 // simple types --------------------------------------------------------------
 
 declare export var asBoolean: Cleaner<boolean>
@@ -18,11 +25,7 @@ declare export var asUnknown: Cleaner<mixed>
 
 // nested types ----------------------------------------------------------------
 
-type ObjectCleaner<Shape> = Cleaner<
-  $ObjMap<Shape, <T>(cleaner: () => T) => T>
-> & {
-  +shape: Shape
-}
+type ReturnType = <T>(() => T) => T
 
 /**
  * Makes a cleaner that accepts an array with the given item type.
@@ -40,9 +43,9 @@ declare export function asMap<T>(
 /**
  * Makes a cleaner that accepts an object with the given property types.
  */
-declare export function asObject<Shape: { [key: string]: Function }>(
+declare export function asObject<Shape>(
   shape: Shape
-): ObjectCleaner<$Diff<$Exact<Shape>, {||}>> // Dummy Diff to help exports work
+): ObjectCleaner<$ObjMap<Shape, ReturnType>>
 
 /**
  * Unpacks a value that may be void or null,
