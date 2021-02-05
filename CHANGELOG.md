@@ -1,5 +1,10 @@
 # cleaners
 
+## 0.3.3 (2021-02-05)
+
+- Document the problem with exporting cleaners under Flow.
+- Export the `ObjectCleaner` type definition.
+
 ## 0.3.2 (2020-08-31)
 
 - Add an `asMaybe` cleaner, which turns invalid data into `undefined`.
