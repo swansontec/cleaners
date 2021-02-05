@@ -72,6 +72,23 @@ type Message = ReturnType<typeof asMessage>
 type Message = $Call<typeof asMessage>
 ```
 
+### Exporting Cleaners in Flow
+
+If you want to export cleaners between files in Flow, you may run into errors. This is because Flow [requires explicit type definitions for all exports](https://medium.com/flow-type/types-first-a-scalable-new-architecture-for-flow-3d8c7ba1d4eb) (unlike TypeScript):
+
+```typescript
+// This works, since it's not exported:
+const asNumbers = asArray(asNumber)
+
+// Flow "Cannot build a typed interface for this module":
+export const asNumbers = asArray(asNumber)
+
+// This works again:
+export const asNumbers: Cleaner<number[]> = asArray(asNumber)
+```
+
+These explicit type definitions are redundant but not harmful, since Flow does check that they match the actual cleaner on the right.
+
 ### Hand-written cleaners
 
 Since cleaners are just functions, you can easily create your own as well, which is useful if you need extra data validation:
