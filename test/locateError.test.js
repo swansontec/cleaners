@@ -16,7 +16,7 @@ describe('locateError', function () {
       expect(error.message).equals(
         'Expected a number at .map["odd \\"item\\""][0]'
       )
-      expect(typeof error.addStep).equals('function')
+      expect(typeof error.insertStepAt).equals('number')
     }
   })
 
@@ -35,7 +35,7 @@ describe('locateError', function () {
     } catch (error) {
       expect(error).not.instanceOf(Error)
       expect(error.message).equals('boom')
-      expect(typeof error.addStep).equals('undefined')
+      expect(typeof error.insertStepAt).equals('undefined')
     }
   })
 
