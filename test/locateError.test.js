@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 
-import { asArray, asMap, asNumber, asObject } from '../src/index.js'
+import { asArray, asJSON, asMap, asNumber, asObject } from '../src/index.js'
 
 describe('locateError', function () {
   it('makes nicely nested errors', function () {
@@ -36,6 +36,16 @@ describe('locateError', function () {
       expect(error).not.instanceOf(Error)
       expect(error.message).equals('boom')
       expect(typeof error.addStep).equals('undefined')
+    }
+  })
+
+  it('works with JSON errors', function () {
+    const asNested = asObject({ json: asJSON(asArray(asNumber)) })
+    try {
+      asNested({ json: '[false]' })
+      throw new Error('Expecting an error')
+    } catch (error) {
+      expect(error.message).equals('Expected a number at JSON.parse(.json)[0]')
     }
   })
 })
