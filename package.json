@@ -11,8 +11,11 @@
   "license": "MIT",
   "author": "William Swanson",
   "exports": {
-    "import": "./lib/index.mjs",
-    "require": "./lib/index.js"
+    ".": {
+      "import": "./lib/index.mjs",
+      "require": "./lib/index.js"
+    },
+    "./package.json": "./package.json"
   },
   "main": "./lib/index.js",
   "module": "./lib/disklet.js",
