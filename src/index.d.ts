@@ -66,10 +66,11 @@ export declare function asEither<A, B>(
 ): Cleaner<A | B>
 
 /**
- * Makes a cleaner that accepts any data and returns the cleaned data from the
- * given cleaner or undefined if cleaner throws.
+ * Wraps a cleaner with an error handling,
+ * returning a fallback value (or `undefined`) if the cleaner throws.
  */
 export declare function asMaybe<T>(cleaner: Cleaner<T>): Cleaner<T | undefined>
+export declare function asMaybe<T>(cleaner: Cleaner<T>, fallback: T): Cleaner<T>
 
 /**
  * Makes a cleaner that parses & validates JSON strings.
