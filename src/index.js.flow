@@ -49,12 +49,12 @@ declare export function asObject<Shape>(
 
 /**
  * Unpacks a value that may be void or null,
- * returning a fallback value if missing.
+ * returning a fallback value (or `undefined`) if missing.
  */
-declare export function asOptional<T, U>(
-  cleaner: (raw: any) => T,
-  fallback: U
-): Cleaner<T | U>
+declare export var asOptional: {|
+  <T>(cleaner: Cleaner<T>): Cleaner<T | void>,
+  <T>(cleaner: Cleaner<T>, fallback: $Call<Cleaner<T>>): Cleaner<T>
+|}
 
 /**
  * Makes a cleaner that accepts either of the given types.

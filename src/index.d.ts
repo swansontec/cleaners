@@ -47,16 +47,11 @@ export declare function asObject<T>(shape: ObjectShape<T>): ObjectCleaner<T>
 
 /**
  * Unpacks a value that may be void or null,
- * returning `undefined` if missing.
+ * returning a fallback value (or `undefined`) if missing.
  */
 export declare function asOptional<T>(
   cleaner: Cleaner<T>
 ): Cleaner<T | undefined>
-
-/**
- * Unpacks a value that may be void or null,
- * returning a fallback value if missing.
- */
 export declare function asOptional<T>(
   cleaner: Cleaner<T>,
   fallback: T
