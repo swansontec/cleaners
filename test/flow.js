@@ -17,7 +17,7 @@ import {
   asString,
   asUndefined,
   asUnknown
-} from '../src/index'
+} from '../src/index.js'
 
 type Expected = {
   array: string[],
