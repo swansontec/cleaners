@@ -17,6 +17,24 @@ If features:
 - 100% test coverage
 - 0.8K minified + gzip
 
+### Installing
+
+If you are using Deno or native browser modules, just import cleaners directly:
+
+```js
+import { asString } from `https://deno.land/x/cleaners/mod.ts`
+```
+
+If you are using Node, first install the package using `npm i cleaners` or `yarn add cleaners`, and then import it using either syntax:
+
+```js
+// The oldschool way:
+const { asString } = require('cleaners')
+
+// Or using Node's new native module support:
+import { asString } from 'cleaners'
+```
+
 ## Overview
 
 This library contains a collection of composable `Cleaner` functions. A cleaner function validates some incoming data, and either returns it with the proper type or throws an exception. Here are some simple examples:
