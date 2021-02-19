@@ -1,5 +1,11 @@
 # cleaners
 
+## 0.3.4 (2021-02-19)
+
+- Add an optional fallback to the `asMaybe` cleaner
+- Fix the `asOptional` Flow types to match the TypeScript ones, where the fallback and cleaner types must match.
+- Add package.json to the Node.js exports table, to fix warnings in the React Native bundler.
+
 ## 0.3.3 (2021-02-05)
 
 - Document the problem with exporting cleaners under Flow.
