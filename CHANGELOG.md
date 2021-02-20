@@ -1,5 +1,10 @@
 # cleaners
 
+## 0.3.5 (2021-02-19)
+
+- Simplify the error location algorithm. Error object no longer receive a helper function, just a simple number property now.
+- Add the package to deno.land, in addition to NPM.
+
 ## 0.3.4 (2021-02-19)
 
 - Add an optional fallback to the `asMaybe` cleaner
