@@ -156,12 +156,16 @@ Compound cleaners don't clean data directly, but they _create_ cleaners that can
 - `asMaybe` - Builds a cleaner that quietly ignores invalid data.
 - `asJSON` - Builds a cleaner for JSON strings.
 
+### asArray
+
 `asArray` accepts a single `Cleaner` that applies to each item within the array:
 
 ```typescript
 // Makes a Cleaner<string[]>:
 const asStringList = asArray(asString)
 ```
+
+### asMap
 
 `asMap` creates a cleaner for generic key / value objects. It accepts a single `Cleaner` that applies to each value within the object:
 
@@ -171,6 +175,8 @@ const asNumberMap = asMap(asNumber)
 const a = asNumberMap({ a: 1, b: 2 }) // Returns { a: 1, b: 2 }
 const a = asNumberMap({ a: false }) // Throws a TypeError
 ```
+
+### asObject
 
 `asObject` accepts a "shape" object, and builds a matching cleaner. For every property in the shape object, the cleaner will grab the matching property off of the input object, clean it, and add it to the output. The cleaner won't copy any unknown properties:
 
@@ -192,6 +198,8 @@ const asBiggerThing = asObject({
 })
 ```
 
+### asOptional
+
 `asOptional` creates a cleaner that handles optional values. If the value to clean is `null` or `undefined`, it returns the fallback (which defaults to `undefined`). Otherwise, it cleans the value & returns it like normal:
 
 ```typescript
@@ -206,6 +214,8 @@ const b = asCounter(null) // returns 0
 const b = asMaybeNumber(null) // returns undefined
 ```
 
+### asEither
+
 `asEither` creates a cleaner that handles multiple options. It tries the first cleaner, and if that throws an exception, it tries the second cleaner:
 
 ```typescript
@@ -216,6 +226,8 @@ const a = asUnit(1) // returns 1
 const b = asUnit('1rem') // returns '1rem'
 const c = asUnit(null) // Throws a TypeError
 ```
+
+### asMaybe
 
 `asMaybe` creates a cleaner that doesn't throw on an invalid type. It tries the cleaner, and if that throws an exception, it will return undefined instead:
 
@@ -244,6 +256,8 @@ if (pizza != null) {
 ```
 
 This type will silence all exceptions from the cleaner(s) it composes. Only use on types for which you do not care why a value is not valid.
+
+### asJSON
 
 `asJSON` accepts a string, which it parses as JSON and passes to the nested cleaner:
 
