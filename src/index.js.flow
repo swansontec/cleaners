@@ -6,10 +6,11 @@
 export type Cleaner<T> = (raw: any) => T
 
 /**
- * A cleaner, but with an extra `shape` property:
+ * A cleaner, but with some extra properties:
  */
 export type ObjectCleaner<T> = Cleaner<T> & {
-  +shape: $ObjMap<T, <T>(type: T) => Cleaner<T>>
+  +shape: $ObjMap<T, <T>(type: T) => Cleaner<T>>,
+  +withRest: Cleaner<T>
 }
 
 // simple types --------------------------------------------------------------
@@ -33,19 +34,17 @@ type ReturnType = <T>(f: () => T) => T
 declare export function asArray<T>(cleaner: Cleaner<T>): Cleaner<T[]>
 
 /**
- * Makes a cleaner that accepts an object with arbitrary keys
- * and the given value type. Removes keys named `__proto__` for safety.
+ * Makes a cleaner that accepts an object.
  */
-declare export function asMap<T>(
-  cleaner: Cleaner<T>
-): Cleaner<{ [key: string]: T }>
+declare export var asObject: {|
+  <T>(cleaner: Cleaner<T>): Cleaner<{ [keys: string]: T }>,
+  <Shape>(shape: Shape): ObjectCleaner<$ObjMap<Shape, ReturnType>>
+|}
 
 /**
- * Makes a cleaner that accepts an object with the given property types.
+ * Deprecated. Use `asObject` directly.
  */
-declare export function asObject<Shape>(
-  shape: Shape
-): ObjectCleaner<$ObjMap<Shape, ReturnType>>
+declare export var asMap: typeof asObject
 
 /**
  * Unpacks a value that may be void or null,
