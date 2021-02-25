@@ -7,10 +7,8 @@
   "parserOptions": {
     "project": "tsconfig.json"
   },
-  "plugins": [
-    "simple-import-sort"
-  ],
+  "plugins": ["simple-import-sort"],
   "rules": {
-    "simple-import-sort/sort": "error"
+    "simple-import-sort/imports": "error"
   }
 }
