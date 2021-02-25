@@ -72,55 +72,68 @@ export function asArray(cleaner) {
 }
 
 /**
- * Makes a cleaner that accepts an object with arbitrary keys
- * and the given value type. Removes keys named `__proto__` for safety.
+ * Makes a cleaner that accepts an object.
+ *
+ * If asObject receives a single cleaner function,
+ * it will will use that to clean all the object's own enumerable properties
+ * (except "__proto__", which gets filtered out).
+ *
+ * Otherwwise, if asObject receives a an object with cleaners as properties,
+ * it will apply each cleaner to the matching key in the object.
  */
-export function asMap(cleaner) {
-  return function asMap(raw) {
-    if (raw == null || typeof raw !== 'object') {
-      throw new TypeError('Expected an object')
-    }
-
-    var keys = Object.keys(raw)
-    try {
-      var out = {}
-      for (var i = 0; i < keys.length; ++i) {
-        var key = keys[i]
-        if (key === '__proto__') continue
-        out[key] = cleaner(raw[key])
+export function asObject(shape) {
+  if (typeof shape === 'function') {
+    // The key-value version:
+    var asObject = function asObject(copy, raw) {
+      if (typeof raw !== 'object' || raw == null) {
+        throw new TypeError('Expected an object')
       }
-      return out
-    } catch (error) {
-      throw locateError(error, '[' + JSON.stringify(key) + ']', 0)
+
+      var keys = Object.keys(raw)
+      try {
+        var out = copy ? {} : raw
+        for (var i = 0; i < keys.length; ++i) {
+          var key = keys[i]
+          if (copy && key === '__proto__') continue
+          out[key] = shape(raw[key])
+        }
+        return out
+      } catch (error) {
+        throw locateError(error, '[' + JSON.stringify(key) + ']', 0)
+      }
+    }
+  } else {
+    // The shape version:
+    var keys = Object.keys(shape)
+    asObject = function asObject(copy, raw) {
+      if (typeof raw !== 'object' || raw == null) {
+        throw new TypeError('Expected an object')
+      }
+
+      try {
+        var out = copy ? {} : raw
+        for (var i = 0; i < keys.length; ++i) {
+          var key = keys[i]
+          out[key] = shape[key](raw[key])
+        }
+        return out
+      } catch (error) {
+        throw locateError(error, '.' + key, 0)
+      }
     }
   }
+
+  var out = asObject.bind(null, true)
+  out.shape = shape
+  out.withoutCopy = asObject.bind(null, false)
+  return out
 }
 
 /**
- * Makes a cleaner that accepts an object with the given property types.
+ * Makes a cleaner that accepts an object with arbitrary keys
+ * and the given value type. Removes keys named `__proto__` for safety.
  */
-export function asObject(shape) {
-  var keys = Object.keys(shape)
-
-  function asObject(raw) {
-    if (raw == null || typeof raw !== 'object') {
-      throw new TypeError('Expected an object')
-    }
-
-    try {
-      var out = {}
-      for (var i = 0; i < keys.length; ++i) {
-        var key = keys[i]
-        out[key] = shape[key](raw[key])
-      }
-      return out
-    } catch (error) {
-      throw locateError(error, '.' + key, 0)
-    }
-  }
-  asObject.shape = shape
-  return asObject
-}
+export var asMap = asObject
 
 export function asJSON(cleaner) {
   return function asJSON(raw) {

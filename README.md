@@ -15,7 +15,7 @@ If features:
 
 - Zero external dependencies
 - 100% test coverage
-- 0.8K minified + gzip
+- 1K minified + gzip
 
 ### Installing
 
@@ -149,12 +149,12 @@ This library includes the following basic cleaner functions:
 Compound cleaners don't clean data directly, but they _create_ cleaners that can handle the data type. This library includes a few:
 
 - `asArray` - Builds an array cleaner.
-- `asObject` - Builds a cleaner for objects with a specific shape.
-- `asMap` - Builds a cleaner for an object used as key / value map.
+- `asObject` - Builds an object cleaner.
 - `asOptional` - Builds a cleaner for an item that might be undefined or null.
 - `asEither` - Builds a cleaner for an item that might have multiple types.
 - `asMaybe` - Builds a cleaner that quietly ignores invalid data.
 - `asJSON` - Builds a cleaner for JSON strings.
+- `asMap` - Deprecated alias for `asObject`.
 
 ### asArray
 
@@ -165,36 +165,45 @@ Compound cleaners don't clean data directly, but they _create_ cleaners that can
 const asStringList = asArray(asString)
 ```
 
-### asMap
-
-`asMap` creates a cleaner for generic key / value objects. It accepts a single `Cleaner` that applies to each value within the object:
-
-```typescript
-// Makes a Cleaner<{ [key: string]: number }>:
-const asNumberMap = asMap(asNumber)
-const a = asNumberMap({ a: 1, b: 2 }) // Returns { a: 1, b: 2 }
-const a = asNumberMap({ a: false }) // Throws a TypeError
-```
-
 ### asObject
 
-`asObject` accepts a "shape" object, and builds a matching cleaner. For every property in the shape object, the cleaner will grab the matching property off of the input object, clean it, and add it to the output. The cleaner won't copy any unknown properties:
+`asObject` builds an object cleaner. The cleaner will accept any Javascript object and make a clean copy.
+
+To clean an object with known property names, pass a "shape" object to `asObject`. Each propery in the "shape" object should be a cleaner that applies to the matching key in the input object. The cleaner won't copy any unknown properties:
 
 ```typescript
 // Makes a Cleaner<{ key: string }>:
 const asThing = asObject({ key: asString })
 
-// Returns { key: 'string' }, with b removed:
-const x = asThing({ key: 'string', b: false })
+// Returns { key: 'string' }, with "extra" removed:
+const x = asThing({ key: 'string', extra: false })
 ```
 
-The cleaners returned from `asObject` also have a `shape` property. This makes it possible to build bigger object cleaners out of smaller object cleaners:
+If `asObject` receives a single cleaner as its parameter, it will apply that cleaner to each property in the object. This is useful when objects act as key / value maps:
+
+```typescript
+// Makes a Cleaner<{ [key: string]: number }>:
+const asNumberMap = asObject(asNumber)
+
+// Returns { a: 1, b: 2 }:
+const a = asNumberMap({ a: 1, b: 2 })
+
+// Throws "TypeError: Expected a number at .a":
+const a = asNumberMap({ a: false })
+```
+
+The cleaners returned from `asObject` also have a `withoutCopy` method on them. This does the same thing as the cleaner itself, but updates the input object in-place without making a copy. This is useful when you only want to clean some of the properties on an object, but not others.
+
+You can use `asObject({}).withoutCopy` if you just want to check that something is an object, and don't care what its contents are.
+
+When `asObject` receives a shape argument, it also add it to the returned cleaner as a `shape` property. The `shape` property makes it possible to build bigger object cleaners out of smaller object cleaners:
 
 ```typescript
 const asBiggerThing = asObject({
-  // Give BiggerThing has all the properties of Thing:
-  ...asThing.shape,
-  extraProperty: asNumber
+  extraProperty: asNumber,
+
+  // Also give BiggerThing has all the properties of Thing:
+  ...asThing.shape
 })
 ```
 
