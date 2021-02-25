@@ -16,28 +16,28 @@ export type ObjectCleaner<T> = Cleaner<T> & {
 
 declare export var asBoolean: Cleaner<boolean>
 declare export var asDate: Cleaner<Date>
-declare export var asNumber: Cleaner<number>
-declare export var asString: Cleaner<string>
 declare export var asNone: Cleaner<void>
 declare export var asNull: Cleaner<null>
+declare export var asNumber: Cleaner<number>
+declare export var asString: Cleaner<string>
 declare export var asUndefined: Cleaner<void>
 declare export var asUnknown: Cleaner<mixed>
 
 // nested types ----------------------------------------------------------------
 
-type ReturnType = <T>(() => T) => T
+type ReturnType = <T>(f: () => T) => T
 
 /**
  * Makes a cleaner that accepts an array with the given item type.
  */
-declare export function asArray<T>(cleaner: (raw: any) => T): Cleaner<T[]>
+declare export function asArray<T>(cleaner: Cleaner<T>): Cleaner<T[]>
 
 /**
  * Makes a cleaner that accepts an object with arbitrary keys
  * and the given value type. Removes keys named `__proto__` for safety.
  */
 declare export function asMap<T>(
-  cleaner: (raw: any) => T
+  cleaner: Cleaner<T>
 ): Cleaner<{ [key: string]: T }>
 
 /**
@@ -60,8 +60,8 @@ declare export var asOptional: {|
  * Makes a cleaner that accepts either of the given types.
  */
 declare export function asEither<A, B>(
-  a: (raw: any) => A,
-  b: (raw: any) => B
+  a: Cleaner<A>,
+  b: Cleaner<B>
 ): Cleaner<A | B>
 
 /**
