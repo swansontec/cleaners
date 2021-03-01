@@ -1,5 +1,11 @@
 # cleaners
 
+## 0.3.6 (2021-03-01)
+
+- Help Deno find the Typescript definitions correctly.
+- Upgrade build tooling.
+- Add readme section headers.
+
 ## 0.3.5 (2021-02-19)
 
 - Simplify the error location algorithm. Error object no longer receive a helper function, just a simple number property now.
