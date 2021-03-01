@@ -1,6 +1,6 @@
-'use strict'
 /* eslint-disable no-var */
-/// <reference path="./index.d.ts" />
+
+'use strict'
 
 // simple types --------------------------------------------------------------
 

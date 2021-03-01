@@ -19,10 +19,10 @@ If features:
 
 ### Installing
 
-If you are using Deno or native browser modules, just import cleaners directly:
+If you are using Deno, just import cleaners directly:
 
 ```js
-import { asString } from `https://deno.land/x/cleaners/mod.ts`
+import { asString } from 'https://deno.land/x/cleaners/mod.ts'
 ```
 
 If you are using Node, first install the package using `npm i cleaners` or `yarn add cleaners`, and then import it using either syntax:
