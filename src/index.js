@@ -145,8 +145,7 @@ export function asObject(shape) {
 }
 
 /**
- * Makes a cleaner that accepts an object with arbitrary keys
- * and the given value type. Removes keys named `__proto__` for safety.
+ * Deprecated. Use `asObject` directly.
  */
 export var asMap = asObject
 
@@ -163,7 +162,7 @@ export function asJSON(cleaner) {
 
 /**
  * Unpacks a value that may be void or null,
- * returning a fallback value if missing.
+ * returning a fallback value (or `undefined`) if missing.
  */
 export function asOptional(cleaner, fallback) {
   return function asOptional(raw) {
@@ -185,8 +184,8 @@ export function asEither(a, b) {
 }
 
 /**
- * Makes a cleaner that accepts any data and returns the cleaned data from the
- * given cleaner or undefined if cleaner throws.
+ * Unpacks a value that may be void or null,
+ * returning a fallback value (or `undefined`) if missing.
  */
 export function asMaybe(cleaner, fallback) {
   return function asMaybe(raw) {
