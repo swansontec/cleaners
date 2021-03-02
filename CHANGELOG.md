@@ -1,5 +1,12 @@
 # cleaners
 
+## 0.3.7 (2021-03-02)
+
+- Re-work the asObject cleaner.
+  - When passed a single cleaner function, create a key-value cleaner like `asMap`.
+  - When passed a shape object, also include a `withRest` method on the generated cleaner. This method cleans the object according to the shape, but also preserves unknown properties if present.
+- Deprecate `asMap`, sicne `asObject` handles this use-case now.
+
 ## 0.3.6 (2021-03-01)
 
 - Help Deno find the Typescript definitions correctly.
