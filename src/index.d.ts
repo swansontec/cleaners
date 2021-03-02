@@ -10,8 +10,9 @@ declare type ObjectShape<T> = {
 /**
  * A cleaner, but with an extra `shape` property:
  */
-export declare type ObjectCleaner<T> = Cleaner<T> & {
+export declare interface ObjectCleaner<T> extends Cleaner<T> {
   readonly shape: ObjectShape<T>
+  readonly withRest: Cleaner<T>
 }
 
 // simple types --------------------------------------------------------------
@@ -33,17 +34,19 @@ export declare const asUnknown: Cleaner<unknown>
 export declare function asArray<T>(cleaner: Cleaner<T>): Cleaner<T[]>
 
 /**
- * Makes a cleaner that accepts an object with arbitrary keys
- * and the given value type. Removes keys named `__proto__` for safety.
+ * Makes a cleaner that accepts an object.
  */
-export declare function asMap<T>(
+export declare function asObject<T>(
   cleaner: Cleaner<T>
-): Cleaner<{ [key: string]: T }>
+): Cleaner<{ [keys: string]: T }>
+export declare function asObject<T extends object>(
+  shape: ObjectShape<T>
+): ObjectCleaner<T>
 
 /**
- * Makes a cleaner that accepts an object with the given property types.
+ * Deprecated. Use `asObject` directly.
  */
-export declare function asObject<T>(shape: ObjectShape<T>): ObjectCleaner<T>
+export declare const asMap: typeof asObject
 
 /**
  * Unpacks a value that may be void or null,
