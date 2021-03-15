@@ -10,7 +10,7 @@ export declare type Cleaner<T> = (raw: any) => T
  */
 export declare type Uncleaner<T> = (clean: T) => unknown
 
-declare type ObjectShape<T> = {
+declare type CleanerShape<T> = {
   [K in keyof T]: Cleaner<T[K]>
 }
 
@@ -18,7 +18,7 @@ declare type ObjectShape<T> = {
  * A cleaner, but with an extra `shape` property:
  */
 export declare interface ObjectCleaner<T> extends Cleaner<T> {
-  readonly shape: ObjectShape<T>
+  readonly shape: CleanerShape<T>
   readonly withRest: Cleaner<T>
 }
 
@@ -53,7 +53,7 @@ export declare function asObject<T>(
   cleaner: Cleaner<T>
 ): Cleaner<{ [keys: string]: T }>
 export declare function asObject<T extends object>(
-  shape: ObjectShape<T>
+  shape: CleanerShape<T>
 ): ObjectCleaner<T>
 
 // branching -----------------------------------------------------------------
@@ -61,10 +61,9 @@ export declare function asObject<T extends object>(
 /**
  * Makes a cleaner that accepts either of the given types.
  */
-export declare function asEither<A, B>(
-  a: Cleaner<A>,
-  b: Cleaner<B>
-): Cleaner<A | B>
+export declare function asEither<T extends unknown[]>(
+  ...shape: CleanerShape<T>
+): Cleaner<T[number]>
 
 /**
  * Wraps a cleaner with an error handling,

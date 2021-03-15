@@ -114,12 +114,14 @@ export function asObject(shape) {
 
 // branching -----------------------------------------------------------------
 
-export function asEither(a, b) {
+export function asEither(...shape) {
   return function asEither(raw) {
-    try {
-      return a(raw)
-    } catch (e) {
-      return b(raw)
+    for (let i = 0; i < shape.length; i++) {
+      try {
+        return shape[i](raw)
+      } catch (error) {
+        if (i + 1 >= shape.length) throw error
+      }
     }
   }
 }
