@@ -102,42 +102,37 @@ export function asObject(shape) {
 
   // The shape-aware version:
   const keys = Object.keys(shape)
-  function copyObjectShape(raw, out) {
-    for (let i = 0; i < keys.length; ++i) {
-      const key = keys[i]
-      try {
-        out[key] = shape[key](raw[key])
-      } catch (error) {
-        throw locateError(error, '.' + key, 0)
+  function bindObjectShape(keepRest) {
+    return function asObject(raw) {
+      if (typeof raw !== 'object' || raw == null) {
+        throw new TypeError('Expected an object')
       }
-    }
-    return out
-  }
 
-  // Build the object cleaner:
-  function asObject(raw) {
-    if (typeof raw !== 'object' || raw == null) {
-      throw new TypeError('Expected an object')
+      let i
+      const out = {}
+      if (keepRest) {
+        const toCopy = Object.keys(raw)
+        for (i = 0; i < toCopy.length; ++i) {
+          const key = toCopy[i]
+          if (key === '__proto__') continue
+          out[key] = raw[key]
+        }
+      }
+      for (i = 0; i < keys.length; ++i) {
+        const key = keys[i]
+        try {
+          out[key] = shape[key](raw[key])
+        } catch (error) {
+          throw locateError(error, '.' + key, 0)
+        }
+      }
+      return out
     }
-
-    return copyObjectShape(raw, {})
   }
-  asObject.shape = shape
-  asObject.withRest = function withRest(raw) {
-    if (typeof raw !== 'object' || raw == null) {
-      throw new TypeError('Expected an object')
-    }
-
-    const out = {}
-    const keys = Object.keys(raw)
-    for (let i = 0; i < keys.length; ++i) {
-      const key = keys[i]
-      if (key === '__proto__') continue
-      out[key] = raw[key]
-    }
-    return copyObjectShape(raw, out)
-  }
-  return asObject
+  const out = bindObjectShape(false)
+  out.shape = shape
+  out.withRest = bindObjectShape(true)
+  return out
 }
 
 /**
