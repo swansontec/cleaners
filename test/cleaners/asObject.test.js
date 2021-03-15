@@ -37,16 +37,28 @@ describe('asObject', function () {
   })
 
   it('accepts shaped objects', function () {
+    // Optional property:
     expect(asDemoObject({ here: 'hi' })).deep.equals({
       here: 'hi',
       maybe: undefined
     })
+
+    // All properties:
     const data = { here: 'hi', maybe: '!', extra: false }
     expect(asDemoObject(data)).deep.equals({
       here: 'hi',
       maybe: '!'
     })
     expect(asDemoObject.withRest(data)).deep.equals(data)
+
+    // Filters __proto__:
+    expect(
+      asDemoObject.withRest(
+        JSON.parse(
+          '{ "here": "hi", "maybe": "!", "extra": false, "__proto__": false }'
+        )
+      )
+    ).deep.equals(data)
   })
 
   it('rejects shaped non-objects', function () {
