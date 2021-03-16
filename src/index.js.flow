@@ -23,6 +23,10 @@ declare export var asString: Cleaner<string>
 declare export var asUndefined: Cleaner<void>
 declare export var asUnknown: Cleaner<mixed>
 
+declare export function asValue<T: boolean | null | number | string | void>(
+  value: T
+): Cleaner<T>
+
 // data structures -----------------------------------------------------------
 
 declare export function asArray<T>(cleaner: Cleaner<T>): Cleaner<T[]>

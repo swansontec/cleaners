@@ -17,8 +17,9 @@ import {
   asOptional,
   asString,
   asUndefined,
-  asUnknown
-} from '../src/index.js'
+  asUnknown,
+  asValue
+} from '../src'
 
 const asUnixDate = asCodec(
   raw => new Date(1000 * asNumber(raw)),
@@ -38,6 +39,13 @@ type Expected = {
   object3: { when: Date },
   optional1: string | void,
   optional2: string,
+
+  literal1: 'foo',
+  literal2: 'bar',
+  literal3: 123,
+  literal4: null,
+  literal5: void,
+  literal6: true,
 
   // Primitives:
   boolean: boolean,
@@ -62,6 +70,13 @@ const cleaner = asObject({
   object3: asObject({ when: asDate }).withRest,
   optional1: asOptional(asString),
   optional2: asOptional(asString, ''),
+
+  literal1: asValue('foo'),
+  literal2: asValue('bar'),
+  literal3: asValue(123),
+  literal4: asValue(null),
+  literal5: asValue(undefined),
+  literal6: asValue(true),
 
   // Primitives:
   boolean: asBoolean,
