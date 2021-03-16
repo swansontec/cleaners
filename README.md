@@ -16,6 +16,7 @@ If features:
 - Zero external dependencies
 - 100% test coverage
 - 1K minified + gzip
+- [Documentation](https://cleaners.js.org)
 
 ### Installing
 
@@ -37,26 +38,27 @@ import { asString } from 'cleaners'
 
 ## Overview
 
+[See the documentation website for details](https://cleaners.js.org), but here is a quick overview:
+
 This library contains a collection of composable `Cleaner` functions. A cleaner function validates some incoming data, and either returns it with the proper type or throws an exception. Here are some simple examples:
 
-```typescript
+```js
 import { asDate, asString } from 'cleaners'
 
-const a = asString('hey') // Returns the string 'hey'
-const b = asString(1) // Throws a TypeError
-const c = asDate('2020-02-20') // Returns a Javascript Date object
+asString('hey') // Returns 'hey'
+asString(1) // TypeError: Expected a string
+asDate('2020-02-20') // Returns a Javascript Date object
 ```
 
 To handle objects, arrays, and other nested data types, this library includes some helpers for combining `Cleaner` functions together:
 
-```typescript
-import { asArray, asObject, asOptional } from 'cleaners'
+```js
+import { asArray, asNumber, asObject, asOptional } from 'cleaners'
 
-// Define a cleaner function for our custom object type:
 const asMessage = asObject({
-  text: asString,
+  message: asString,
+  title: asOptional(asString), // Optional string
   recipients: asArray(asString), // Array of strings
-  seenOn: asOptional(asDate), // Optional Date
   replyCount: asOptional(asNumber, 0) // Number with default value
 })
 
@@ -67,224 +69,13 @@ try {
 } catch (error) {}
 ```
 
-### Automatic type definitions
-
 Thanks to our TypeScript & Flow support, the custom `asMessage` function above has a detailed return type. The means you will get the same error-checking & auto-completion as if you had entered the following type declaration by hand:
 
 ```typescript
 interface Message {
   text: string
+  title: string | undefined
   recipients: string[]
-  seenOn: Date | undefined
   replyCount: number
 }
-```
-
-If you want to give names to these automatically-created types, use code like the following:
-
-```typescript
-// Typescript:
-type Message = ReturnType<typeof asMessage>
-
-// Flow:
-type Message = $Call<typeof asMessage>
-```
-
-### Exporting Cleaners in Flow
-
-If you want to export cleaners between files in Flow, you may run into errors. This is because Flow [requires explicit type definitions for all exports](https://medium.com/flow-type/types-first-a-scalable-new-architecture-for-flow-3d8c7ba1d4eb) (unlike TypeScript):
-
-```typescript
-// This works, since it's not exported:
-const asNumbers = asArray(asNumber)
-
-// Flow "Cannot build a typed interface for this module":
-export const asNumbers = asArray(asNumber)
-
-// This works again:
-export const asNumbers: Cleaner<number[]> = asArray(asNumber)
-```
-
-These explicit type definitions are redundant but not harmful, since Flow does check that they match the actual cleaner on the right.
-
-### Hand-written cleaners
-
-Since cleaners are just functions, you can easily create your own as well, which is useful if you need extra data validation:
-
-```typescript
-function asEvenNumber(raw: any): number {
-  if (typeof raw !== 'number' || raw % 2 !== 0) {
-    throw new TypeError('Expected an even number')
-  }
-  return raw
-}
-```
-
-Or extra data conversions:
-
-```typescript
-import { asString, Cleaner } from 'cleaners'
-import { base64 } from 'rfc4648'
-
-const asBase64Data: Cleaner<Uint8Array> = raw => base64.parse(asString(raw))
-```
-
-You can pass these functions to `asObject` or any of the others helpers, and they will work perfectly, including TypeScript & Flow return-type inference.
-
-## Basic cleaners
-
-This library includes the following basic cleaner functions:
-
-- `asBoolean` - accepts & returns a `boolean`.
-- `asNumber` - accepts & returns a `number`.
-- `asString` - accepts & returns a `string`.
-- `asDate` - accepts & returns a `Date`, but parses strings if needed.
-- `asNull` - accepts & returns `null`.
-- `asNone` - accepts & returns `undefined`, but accepts `null` as well.
-- `asUndefined` - accepts & returns `undefined`.
-- `asUnknown` - accepts anything.
-
-## Compound cleaners
-
-Compound cleaners don't clean data directly, but they _create_ cleaners that can handle the data type. This library includes a few:
-
-- `asArray` - Builds an array cleaner.
-- `asObject` - Builds an object cleaner.
-- `asOptional` - Builds a cleaner for an item that might be undefined or null.
-- `asEither` - Builds a cleaner for an item that might have multiple types.
-- `asMaybe` - Builds a cleaner that quietly ignores invalid data.
-- `asJSON` - Builds a cleaner for JSON strings.
-- `asMap` - Deprecated alias for `asObject`.
-
-### asArray
-
-`asArray` accepts a single `Cleaner` that applies to each item within the array:
-
-```typescript
-// Makes a Cleaner<string[]>:
-const asStringList = asArray(asString)
-```
-
-### asObject
-
-`asObject` builds an object cleaner. The cleaner will accept any Javascript object and make a clean copy.
-
-If `asObject` receives a single cleaner as its parameter, it will apply that cleaner to each property in the object. This is useful when objects act as key / value maps:
-
-```typescript
-// Makes a Cleaner<{ [key: string]: number }>:
-const asNumberMap = asObject(asNumber)
-
-// Returns { a: 1, b: 2 }:
-const a = asNumberMap({ a: 1, b: 2 })
-
-// Throws "TypeError: Expected a number at .a":
-const a = asNumberMap({ a: false })
-```
-
-You can use `asObject(asUnknown)` if you just want to check that something is an object, and don't care what its contents are.
-
-To clean an object with known property names, pass a "shape" object to `asObject`. Each propery in the "shape" object should be a cleaner that applies to the matching key in the input object. The cleaner won't copy any unknown properties:
-
-```typescript
-// Makes a Cleaner<{ key: string }>:
-const asThing = asObject({ key: asString })
-
-// Returns { key: 'string' }, with "extra" removed:
-const x = asThing({ key: 'string', extra: false })
-```
-
-When `asObject` receives a shape argument, it also add it to the returned cleaner as a `shape` property. The `shape` property makes it possible to build bigger object cleaners out of smaller object cleaners:
-
-```typescript
-const asBiggerThing = asObject({
-  extraProperty: asNumber,
-
-  // Also give BiggerThing has all the properties of Thing:
-  ...asThing.shape
-})
-```
-
-In addition to the `shape` property, the returned cleaner will have a `withRest` method, which does the same thing as the cleaner, but also preserves unknown properties:
-
-```js
-// Returns `{ key: 'string', extra: false }`,
-// even though `asThing.shape` doesn't have an "extra" property:
-const y = asThing.withRest({ key: 'string', extra: false })
-```
-
-This is useful when you only want to clean some of the properties on an object, but not others.
-
-### asOptional
-
-`asOptional` creates a cleaner that handles optional values. If the value to clean is `null` or `undefined`, it returns the fallback (which defaults to `undefined`). Otherwise, it cleans the value & returns it like normal:
-
-```typescript
-// Makes a Cleaner<number>:
-const asCounter = asOptional(asNumber, 0)
-
-// Makes a Cleaner<number | void>:
-const asMaybeNumber = asOptional(asNumber)
-
-const a = asCounter(1) // returns 1
-const b = asCounter(null) // returns 0
-const b = asMaybeNumber(null) // returns undefined
-```
-
-### asEither
-
-`asEither` creates a cleaner that handles multiple options. It tries the first cleaner, and if that throws an exception, it tries the second cleaner:
-
-```typescript
-// Makes a Cleaner<string | number>:
-const asUnit = asEither(asString, asNumber)
-
-const a = asUnit(1) // returns 1
-const b = asUnit('1rem') // returns '1rem'
-const c = asUnit(null) // Throws a TypeError
-```
-
-### asMaybe
-
-`asMaybe` creates a cleaner that doesn't throw on an invalid type. It tries the cleaner, and if that throws an exception, it will return undefined instead:
-
-```typescript
-// Makes a Cleaner<string | undefined>:
-const asMaybeString = asMaybe(asString)
-
-const a = asMaybe('Valid string') // returns 'Valid string'
-const b = asMaybe(23) // returns undefined
-const c = asMaybe(null) // returns undefined
-```
-
-This cleaner is useful as a type guard on your data:
-
-```typescript
-const pizza = asMaybe(asPizza)(obj)
-const salad = asMaybe(asSalad)(obj)
-
-if (pizza != null) {
-  // It's a pizza
-} else if (salad != null) {
-  // It's a salad
-} else {
-  // It's neither
-}
-```
-
-This type will silence all exceptions from the cleaner(s) it composes. Only use on types for which you do not care why a value is not valid.
-
-### asJSON
-
-`asJSON` accepts a string, which it parses as JSON and passes to the nested cleaner:
-
-```typescript
-// Makes a Cleaner<string[]>:
-const asNamesFile = asJSON(asArray(asString))
-
-const a = asNamesFile('["jack","jill"]') // returns ['jack', 'jill']
-const b = asNamesFile([]) // TypeError: Expected a string
-
-// Returns an array of strings, right from disk:
-const names = asNamesFile(fs.readFileSync('names.json', 'utf8'))
 ```
