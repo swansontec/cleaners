@@ -55,4 +55,8 @@ export declare function asEither<A, B>(
 export declare function asMaybe<T>(cleaner: Cleaner<T>): Cleaner<T | undefined>
 export declare function asMaybe<T>(cleaner: Cleaner<T>, fallback: T): Cleaner<T>
 
+export declare function asLiteral<
+  T extends string | number | null | undefined | {}
+>(literal: T): Cleaner<T>
+
 export declare function asJSON<T>(cleaner: Cleaner<T>): Cleaner<T>

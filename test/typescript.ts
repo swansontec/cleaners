@@ -6,6 +6,7 @@ import {
   asDate,
   asEither,
   asJSON,
+  asLiteral,
   asMap,
   asMaybe,
   asNone,
@@ -31,6 +32,12 @@ interface Expected {
   optional1: string | undefined
   optional2: string
 
+  literal1: 'foo'
+  literal2: 'bar'
+  literal3: 123
+  literal4: null
+  literal5: undefined
+
   // Primitives:
   boolean: boolean
   none: undefined
@@ -53,6 +60,12 @@ const cleaner = asObject({
   object3: asObject({ when: asDate }).withRest,
   optional1: asOptional(asString),
   optional2: asOptional(asString, ''),
+
+  literal1: asLiteral('foo'),
+  literal2: asLiteral('bar'),
+  literal3: asLiteral(123),
+  literal4: asLiteral(null),
+  literal5: asLiteral(undefined),
 
   // Primitives:
   boolean: asBoolean,

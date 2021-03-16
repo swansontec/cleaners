@@ -7,6 +7,7 @@ import {
   asDate,
   asEither,
   asJSON,
+  asLiteral,
   asMap,
   asMaybe,
   asNone,
@@ -17,7 +18,7 @@ import {
   asString,
   asUndefined,
   asUnknown
-} from '../src/index.js'
+} from '../src'
 
 type Expected = {
   array: string[],
@@ -31,6 +32,12 @@ type Expected = {
   object3: { when: Date },
   optional1: string | void,
   optional2: string,
+
+  literal1: 'foo',
+  literal2: 'bar',
+  literal3: 123,
+  literal4: null,
+  literal5: void,
 
   // Primitives:
   boolean: boolean,
@@ -54,6 +61,12 @@ const cleaner = asObject({
   object3: asObject({ when: asDate }).withRest,
   optional1: asOptional(asString),
   optional2: asOptional(asString, ''),
+
+  literal1: asLiteral('foo'),
+  literal2: asLiteral('bar'),
+  literal3: asLiteral(123),
+  literal4: asLiteral(null),
+  literal5: asLiteral(undefined),
 
   // Primitives:
   boolean: asBoolean,

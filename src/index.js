@@ -197,6 +197,17 @@ export function asMaybe(cleaner, fallback) {
   }
 }
 
+export function asLiteral(literal) {
+  return function asLiteral(raw) {
+    if (raw !== literal) {
+      throw new TypeError(
+        `Expected ${typeof literal} literal '${JSON.stringify(literal)}'`
+      )
+    }
+    return raw
+  }
+}
+
 // helpers ---------------------------------------------------------------------
 
 /**
