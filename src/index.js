@@ -1,7 +1,3 @@
-/* eslint-disable no-var */
-
-'use strict'
-
 // simple types --------------------------------------------------------------
 
 export function asBoolean(raw) {
@@ -39,7 +35,7 @@ export function asDate(raw) {
     throw new TypeError('Expected a date string')
   }
 
-  var out = new Date(raw)
+  const out = new Date(raw)
   if (out.toJSON() == null) throw new TypeError('Invalid date format')
   return out
 }
@@ -59,13 +55,13 @@ export function asArray(cleaner) {
       throw new TypeError('Expected an array')
     }
 
-    var out = []
-    try {
-      for (var i = 0; i < raw.length; ++i) {
+    const out = []
+    for (let i = 0; i < raw.length; ++i) {
+      try {
         out[i] = cleaner(raw[i])
+      } catch (error) {
+        throw locateError(error, '[' + i + ']', 0)
       }
-    } catch (error) {
-      throw locateError(error, '[' + i + ']', 0)
     }
     return out
   }
@@ -89,69 +85,64 @@ export function asObject(shape) {
         throw new TypeError('Expected an object')
       }
 
-      var out = {}
-      var keys = Object.keys(raw)
-      try {
-        for (var i = 0; i < keys.length; ++i) {
-          var key = keys[i]
-          if (key === '__proto__') continue
+      const out = {}
+      const keys = Object.keys(raw)
+      for (let i = 0; i < keys.length; ++i) {
+        const key = keys[i]
+        if (key === '__proto__') continue
+        try {
           out[key] = shape(raw[key])
+        } catch (error) {
+          throw locateError(error, '[' + JSON.stringify(key) + ']', 0)
         }
-      } catch (error) {
-        throw locateError(error, '[' + JSON.stringify(key) + ']', 0)
       }
       return out
     }
   }
 
   // The shape-aware version:
-  var keys = Object.keys(shape)
-  function copyObjectShape(raw, out) {
-    try {
-      for (var i = 0; i < keys.length; ++i) {
-        var key = keys[i]
-        out[key] = shape[key](raw[key])
+  const keys = Object.keys(shape)
+  function bindObjectShape(keepRest) {
+    return function asObject(raw) {
+      if (typeof raw !== 'object' || raw == null) {
+        throw new TypeError('Expected an object')
       }
-    } catch (error) {
-      throw locateError(error, '.' + key, 0)
-    }
-    return out
-  }
 
-  // Build the object cleaner:
-  function asObject(raw) {
-    if (typeof raw !== 'object' || raw == null) {
-      throw new TypeError('Expected an object')
+      let i
+      const out = {}
+      if (keepRest) {
+        const toCopy = Object.keys(raw)
+        for (i = 0; i < toCopy.length; ++i) {
+          const key = toCopy[i]
+          if (key === '__proto__') continue
+          out[key] = raw[key]
+        }
+      }
+      for (i = 0; i < keys.length; ++i) {
+        const key = keys[i]
+        try {
+          out[key] = shape[key](raw[key])
+        } catch (error) {
+          throw locateError(error, '.' + key, 0)
+        }
+      }
+      return out
     }
-
-    return copyObjectShape(raw, {})
   }
-  asObject.shape = shape
-  asObject.withRest = function withRest(raw) {
-    if (typeof raw !== 'object' || raw == null) {
-      throw new TypeError('Expected an object')
-    }
-
-    var out = {}
-    var keys = Object.keys(raw)
-    for (var i = 0; i < keys.length; ++i) {
-      var key = keys[i]
-      if (key === '__proto__') continue
-      out[key] = raw[key]
-    }
-    return copyObjectShape(raw, out)
-  }
-  return asObject
+  const out = bindObjectShape(false)
+  out.shape = shape
+  out.withRest = bindObjectShape(true)
+  return out
 }
 
 /**
  * Deprecated. Use `asObject` directly.
  */
-export var asMap = asObject
+export const asMap = asObject
 
 export function asJSON(cleaner) {
   return function asJSON(raw) {
-    var value = JSON.parse(asString(raw))
+    const value = JSON.parse(asString(raw))
     try {
       return cleaner(value)
     } catch (error) {

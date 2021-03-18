@@ -18,7 +18,7 @@
     "./package.json": "./package.json"
   },
   "main": "./lib/index.js",
-  "module": "./src/index.js",
+  "module": "./lib/cleaners.js",
   "types": "./src/index.d.ts",
   "files": [
     "/CHANGELOG.md",
@@ -47,6 +47,9 @@
     "*.{js,ts}": "eslint"
   },
   "devDependencies": {
+    "@babel/core": "^7.13.10",
+    "@babel/preset-env": "^7.13.10",
+    "@rollup/plugin-babel": "^5.3.0",
     "@typescript-eslint/eslint-plugin": "^4.8.2",
     "@typescript-eslint/parser": "^4.8.2",
     "babel-eslint": "^10.1.0",
