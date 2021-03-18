@@ -10,22 +10,25 @@ Primitive values:
 - `asUndefined` - Accepts & returns `undefined`.
 - `asUnknown` - Accepts anything.
 
-Arrays and objects:
+Data structures:
 
-- `asArray` - Builds an array cleaner.
-- `asObject` - Builds an object cleaner.
-- `asMap` - Deprecated alias for `asObject`.
+- [`asArray`](#asArray) - Builds an array cleaner.
+- [`asObject`](#asObject) - Builds an object cleaner.
 
-Missing data:
+Branching:
 
-- `asEither` - Builds a cleaner for an item that might have multiple types.
-- `asMaybe` - Builds a cleaner that quietly ignores invalid data.
-- `asOptional` - Builds a cleaner for an item that might be undefined or null.
+- [`asEither`](#asEither) - Builds a cleaner for an item that might have multiple types.
+- [`asMaybe`](#asMaybe) - Builds a cleaner that quietly ignores invalid data.
+- [`asOptional`](#asOptional) - Builds a cleaner for an item that might be undefined or null.
 
-String parsing:
+Parsing:
 
 - `asDate` - Accepts & returns a `Date`, but parses strings if needed.
-- `asJSON` - Builds a cleaner for JSON strings.
+- [`asJSON`](#asJSON) - Builds a cleaner for JSON strings.
+
+Deprecated:
+
+- `asMap` - Renamed to [`asObject`](#asObject).
 
 ## asArray
 

@@ -56,7 +56,7 @@ async function getMessage(id: string) {
 }
 ```
 
-If the server sends bad data, this example will simply throw an exception rather than return data in the wrong format. Even if the server sends malicious properties like `__proto__`, this example will simply filter those out.
+If the server sends bad data, this example will simply throw an exception rather than return data in the wrong format. Even if the server sends malicious properties like `__proto__`, the cleaner will simply filter those out.
 
 ## Automatic Type Definitions
 
