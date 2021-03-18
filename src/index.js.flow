@@ -1,22 +1,19 @@
 // @flow
 
-/**
- * Reads & checks an untrusted value. Throws an exception if it's wrong.
- */
+// type names ----------------------------------------------------------------
+
 export type Cleaner<T> = (raw: any) => T
 
-/**
- * A cleaner, but with some extra properties:
- */
 export type ObjectCleaner<T> = Cleaner<T> & {
   +shape: $ObjMap<T, <T>(type: T) => Cleaner<T>>,
   +withRest: Cleaner<T>
 }
 
+type ReturnType = <T>(f: () => T) => T
+
 // simple types --------------------------------------------------------------
 
 declare export var asBoolean: Cleaner<boolean>
-declare export var asDate: Cleaner<Date>
 declare export var asNone: Cleaner<void>
 declare export var asNull: Cleaner<null>
 declare export var asNumber: Cleaner<number>
@@ -24,9 +21,7 @@ declare export var asString: Cleaner<string>
 declare export var asUndefined: Cleaner<void>
 declare export var asUnknown: Cleaner<mixed>
 
-// nested types ----------------------------------------------------------------
-
-type ReturnType = <T>(f: () => T) => T
+// data structures -----------------------------------------------------------
 
 declare export function asArray<T>(cleaner: Cleaner<T>): Cleaner<T[]>
 
@@ -35,12 +30,7 @@ declare export var asObject: {|
   <Shape>(shape: Shape): ObjectCleaner<$ObjMap<Shape, ReturnType>>
 |}
 
-declare export var asMap: typeof asObject
-
-declare export var asOptional: {|
-  <T>(cleaner: Cleaner<T>): Cleaner<T | void>,
-  <T>(cleaner: Cleaner<T>, fallback: $Call<Cleaner<T>>): Cleaner<T>
-|}
+// branching -----------------------------------------------------------------
 
 declare export function asEither<A, B>(
   a: Cleaner<A>,
@@ -52,4 +42,17 @@ declare export var asMaybe: {|
   <T>(cleaner: Cleaner<T>, fallback: $Call<Cleaner<T>>): Cleaner<T>
 |}
 
+declare export var asOptional: {|
+  <T>(cleaner: Cleaner<T>): Cleaner<T | void>,
+  <T>(cleaner: Cleaner<T>, fallback: $Call<Cleaner<T>>): Cleaner<T>
+|}
+
+// parsing -------------------------------------------------------------------
+
+declare export var asDate: Cleaner<Date>
+
 declare export function asJSON<T>(cleaner: Cleaner<T>): Cleaner<T>
+
+// deprecated ----------------------------------------------------------------
+
+declare export var asMap: typeof asObject

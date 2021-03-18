@@ -30,25 +30,12 @@ export function asNone(raw) {
   return undefined
 }
 
-export function asDate(raw) {
-  if (typeof raw !== 'string' && !(raw instanceof Date)) {
-    throw new TypeError('Expected a date string')
-  }
-
-  const out = new Date(raw)
-  if (out.toJSON() == null) throw new TypeError('Invalid date format')
-  return out
-}
-
 export function asUnknown(raw) {
   return raw
 }
 
-// nested types ----------------------------------------------------------------
+// data structures -----------------------------------------------------------
 
-/**
- * Makes a cleaner that accepts an array with the given item type.
- */
 export function asArray(cleaner) {
   return function asArray(raw) {
     if (!Array.isArray(raw)) {
@@ -67,16 +54,6 @@ export function asArray(cleaner) {
   }
 }
 
-/**
- * Makes a cleaner that accepts an object.
- *
- * If asObject receives a single cleaner function,
- * it will will use that to clean all the object's own enumerable properties
- * (except "__proto__", which gets filtered out).
- *
- * Otherwise, if asObject receives an object with cleaners as properties,
- * it will apply each cleaner to the matching key in the object.
- */
 export function asObject(shape) {
   // The key-value version:
   if (typeof shape === 'function') {
@@ -135,10 +112,45 @@ export function asObject(shape) {
   return out
 }
 
-/**
- * Deprecated. Use `asObject` directly.
- */
-export const asMap = asObject
+// branching -----------------------------------------------------------------
+
+export function asEither(a, b) {
+  return function asEither(raw) {
+    try {
+      return a(raw)
+    } catch (e) {
+      return b(raw)
+    }
+  }
+}
+
+export function asMaybe(cleaner, fallback) {
+  return function asMaybe(raw) {
+    try {
+      return cleaner(raw)
+    } catch (e) {
+      return fallback
+    }
+  }
+}
+
+export function asOptional(cleaner, fallback) {
+  return function asOptional(raw) {
+    return raw != null ? cleaner(raw) : fallback
+  }
+}
+
+// parsing -------------------------------------------------------------------
+
+export function asDate(raw) {
+  if (typeof raw !== 'string' && !(raw instanceof Date)) {
+    throw new TypeError('Expected a date string')
+  }
+
+  const out = new Date(raw)
+  if (out.toJSON() == null) throw new TypeError('Invalid date format')
+  return out
+}
 
 export function asJSON(cleaner) {
   return function asJSON(raw) {
@@ -151,44 +163,11 @@ export function asJSON(cleaner) {
   }
 }
 
-/**
- * Unpacks a value that may be void or null,
- * returning a fallback value (or `undefined`) if missing.
- */
-export function asOptional(cleaner, fallback) {
-  return function asOptional(raw) {
-    return raw != null ? cleaner(raw) : fallback
-  }
-}
+// deprecated ----------------------------------------------------------------
 
-/**
- * Makes a cleaner that accepts either of the given types.
- */
-export function asEither(a, b) {
-  return function asEither(raw) {
-    try {
-      return a(raw)
-    } catch (e) {
-      return b(raw)
-    }
-  }
-}
+export const asMap = asObject
 
-/**
- * Unpacks a value that may be void or null,
- * returning a fallback value (or `undefined`) if missing.
- */
-export function asMaybe(cleaner, fallback) {
-  return function asMaybe(raw) {
-    try {
-      return cleaner(raw)
-    } catch (e) {
-      return fallback
-    }
-  }
-}
-
-// helpers ---------------------------------------------------------------------
+// helpers -------------------------------------------------------------------
 
 /**
  * Adds location information to an error message.
