@@ -5,6 +5,11 @@
  */
 export declare type Cleaner<T> = (raw: any) => T
 
+/**
+ * Undoes the effect of a cleaner.
+ */
+export declare type Uncleaner<T> = (clean: T) => unknown
+
 declare type ObjectShape<T> = {
   [K in keyof T]: Cleaner<T[K]>
 }
@@ -83,6 +88,14 @@ export declare function asOptional<T>(
 // parsing -------------------------------------------------------------------
 
 /**
+ * Creates a cleaner that can undo its own data conversions.
+ */
+declare function asCodec<T>(
+  cleaner: Cleaner<T>,
+  uncleaner: Uncleaner<T>
+): Cleaner<T>
+
+/**
  * Parses a string into a Javascript Date object.
  */
 export declare const asDate: Cleaner<Date>
@@ -91,6 +104,11 @@ export declare const asDate: Cleaner<Date>
  * Parses a string as JSON, and then cleans the contents.
  */
 export declare function asJSON<T>(cleaner: Cleaner<T>): Cleaner<T>
+
+/**
+ * Gets the uncleaner that undoes a cleaner's data conversions.
+ */
+export declare function uncleaner<T>(cleaner: Cleaner<T>): Uncleaner<T>
 
 // deprecated ----------------------------------------------------------------
 

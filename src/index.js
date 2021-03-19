@@ -142,23 +142,52 @@ export function asOptional(cleaner, fallback) {
 
 // parsing -------------------------------------------------------------------
 
-export function asDate(raw) {
-  if (typeof raw !== 'string' && !(raw instanceof Date)) {
-    throw new TypeError('Expected a date string')
-  }
+let uncleaning = 0
 
-  const out = new Date(raw)
-  if (out.toJSON() == null) throw new TypeError('Invalid date format')
-  return out
+export function asCodec(cleaner, uncleaner) {
+  return function asCodec(raw) {
+    return uncleaning > 0 ? uncleaner(raw) : cleaner(raw)
+  }
 }
 
+export const asDate = asCodec(
+  function asDate(raw) {
+    if (typeof raw !== 'string' && !(raw instanceof Date)) {
+      throw new TypeError('Expected a date string')
+    }
+
+    const out = new Date(raw)
+    if (out.toJSON() == null) throw new TypeError('Invalid date format')
+    return out
+  },
+  function wasDate(clean) {
+    return clean.toISOString()
+  }
+)
+
 export function asJSON(cleaner) {
-  return function asJSON(raw) {
-    const value = JSON.parse(asString(raw))
+  return asCodec(
+    function asJSON(raw) {
+      const value = JSON.parse(asString(raw))
+      try {
+        return cleaner(value)
+      } catch (error) {
+        throw locateError(error, 'JSON.parse()', 11)
+      }
+    },
+    function wasJSON(clean) {
+      return JSON.stringify(cleaner(clean))
+    }
+  )
+}
+
+export function uncleaner(cleaner) {
+  return function uncleaner(raw) {
     try {
-      return cleaner(value)
-    } catch (error) {
-      throw locateError(error, 'JSON.parse()', 11)
+      ++uncleaning
+      return cleaner(raw)
+    } finally {
+      --uncleaning
     }
   }
 }

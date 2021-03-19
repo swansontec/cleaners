@@ -90,3 +90,28 @@ Since JSON doesn't have its own date type, people usually send dates as strings:
 ```
 
 It's not enough to check that `birthday` is a string - the contents need to be parsed and validated as well. Fortunately, cleaners can do this. The `asDate` cleaner will actually parse strings into Javascript date objects, solving this problem.
+
+## Uncleaning
+
+When cleaners do additional data conversions, such as parsing strings into dates, it is useful to be able to undo those conversions. For instance, if a cleaner parses data from disk, those changes need to be undone before writing the file back to disk.
+
+To handle cases like this, use the `uncleaner` function:
+
+```js
+const asFile = asJSON(asObject({ lastLogin: asDate }))
+const wasFile = uncleaner(asFile)
+```
+
+The `wasFile` function will undo the conversions performed in the `asFile` cleaner. In this example, it will convert the date back into a string, and then encode everything back into JSON.
+
+```js
+// Read & parse the file:
+const file = asFile(fs.readFileSync('lastLogin.json', 'utf8'))
+
+// Make changes:
+console.log(file.lastLogin)
+file.lastLogin = new Date()
+
+// Re-encode and write the file:
+fs.writeFileSync('lastLogin.json', wasFile(file))
+```

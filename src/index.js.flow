@@ -4,6 +4,8 @@
 
 export type Cleaner<T> = (raw: any) => T
 
+export type Uncleaner<T> = (clean: T) => mixed
+
 export type ObjectCleaner<T> = Cleaner<T> & {
   +shape: $ObjMap<T, <T>(type: T) => Cleaner<T>>,
   +withRest: Cleaner<T>
@@ -49,9 +51,16 @@ declare export var asOptional: {|
 
 // parsing -------------------------------------------------------------------
 
+declare export function asCodec<T>(
+  cleaner: Cleaner<T>,
+  uncleaner: Uncleaner<T>
+): Cleaner<T>
+
 declare export var asDate: Cleaner<Date>
 
 declare export function asJSON<T>(cleaner: Cleaner<T>): Cleaner<T>
+
+declare export function uncleaner<T>(cleaner: Cleaner<T>): Uncleaner<T>
 
 // deprecated ----------------------------------------------------------------
 

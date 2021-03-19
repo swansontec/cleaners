@@ -23,8 +23,10 @@ Branching:
 
 Parsing:
 
+- [`asCodec`](#asCodec) - Builds a cleaner that can undo its own data conversion.
 - `asDate` - Accepts & returns a `Date`, but parses strings if needed.
 - [`asJSON`](#asJSON) - Builds a cleaner for JSON strings.
+- [`uncleaner`](#uncleaner) - Builds an uncleaner function, which reverses the effect of a cleaner.
 
 Deprecated:
 
@@ -38,6 +40,22 @@ Deprecated:
 // Makes a Cleaner<string[]>:
 const asStringList = asArray(asString)
 ```
+
+## asCodec
+
+`asCodec` creates a cleaner that can undo its own data conversion. This is useful for cleaners that parse strings or similar things.
+
+```js
+// Converts UNIX timestamps to / from  Javascript Date objects:
+const asUnixDate: Cleaner<Date> = asCodec(
+  raw => new Date(1000 * asNumber(raw)),
+  clean => clean.valueOf() / 1000
+)
+```
+
+The first parameter to `asCodec` is the regular cleaner function, which accepts raw data and returns clean data. The second parameter is the un-cleaner function, which turns the clean data (a `Date` in the example above) back into raw data (a UNIX timestamp in this case).
+
+To get access to the un-cleaner, see `uncleaner`.
 
 ## asEither
 
@@ -163,3 +181,16 @@ const asMaximum = asOptional(asNumber)
 
 asMaximum(null) // returns undefined
 ```
+
+## uncleaner
+
+The `uncleaner` turns a cleaner into an un-cleaner.
+
+```js
+const asThing: Cleaner<T> = ...
+const wasThing: Uncleaner<T> = uncleaner(asThing)
+```
+
+This un-cleaner will un-do any data conversions (such as string parsing) performed by the cleaner.
+
+Un-cleaners have the oposite data types as their corresponding cleaner. Since all cleaners accept `unknown` and return some known type `T`, the matching un-cleaner will accept type `T` and return `unknown`.

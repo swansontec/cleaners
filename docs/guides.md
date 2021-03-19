@@ -31,16 +31,21 @@ function asEvenNumber(raw: any): number {
 }
 ```
 
-Or extra data conversions:
+You can pass this function to `asObject` or any of the others helpers, and they will work perfectly, including TypeScript & Flow return-type inference.
+
+If your clenaer performs data conversions, wrap it in the `asCodec` helper:
 
 ```js
 import { asString, Cleaner } from 'cleaners'
 import { base64 } from 'rfc4648'
 
-const asBase64Data: Cleaner<Uint8Array> = raw => base64.parse(asString(raw))
+const asBase64: Cleaner<Uint8Array> = asCodec(
+  raw => base64.parse(asString(raw))
+  clean => base64.stringify(clean)
+)
 ```
 
-You can pass these functions to `asObject` or any of the others helpers, and they will work perfectly, including TypeScript & Flow return-type inference.
+The first parameter to `asCodec` is the cleaner, and the second parameter is the un-cleaner.
 
 ## Recursive Cleaners
 
