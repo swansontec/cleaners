@@ -6,7 +6,6 @@ import {
   asDate,
   asEither,
   asJSON,
-  asLiteral,
   asMap,
   asMaybe,
   asNone,
@@ -16,7 +15,8 @@ import {
   asOptional,
   asString,
   asUndefined,
-  asUnknown
+  asUnknown,
+  asValue
 } from '../src/index.js'
 
 interface Expected {
@@ -61,11 +61,11 @@ const cleaner = asObject({
   optional1: asOptional(asString),
   optional2: asOptional(asString, ''),
 
-  literal1: asLiteral('foo'),
-  literal2: asLiteral('bar'),
-  literal3: asLiteral(123),
-  literal4: asLiteral(null),
-  literal5: asLiteral(undefined),
+  literal1: asValue('foo'),
+  literal2: asValue('bar'),
+  literal3: asValue(123),
+  literal4: asValue(null),
+  literal5: asValue(undefined),
 
   // Primitives:
   boolean: asBoolean,
