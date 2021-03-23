@@ -18,16 +18,6 @@ const { asString } = require('cleaners')
 import { asString } from 'cleaners'
 ```
 
-## Converting Data
-
-Since JSON doesn't have its own date type, people usually send dates as strings:
-
-```js
-{ "birthday": "2010-04-01" }
-```
-
-It's not enough to check that `birthday` is a string - the contents need to be parsed and validated as well. Fortunately, cleaners can do this. The `asDate` cleaner will actually parse strings into Javascript date objects, solving this problem.
-
 ## Writing Custom Cleaners
 
 Since cleaners are just functions, you can easily create your own as well, which is useful if you need extra data validation:
