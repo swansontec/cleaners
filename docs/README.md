@@ -56,7 +56,7 @@ async function getMessage(id: string) {
 }
 ```
 
-If the server sends bad data, this example will simply throw an exception rather than return data in the wrong format. Even if the server sends malicious properties like `__proto__`, this example will simply filter those out.
+If the server sends bad data, this example will simply throw an exception rather than return data in the wrong format. Even if the server sends malicious properties like `__proto__`, the cleaner will simply filter those out.
 
 ## Automatic Type Definitions
 
@@ -81,20 +81,37 @@ type Message = ReturnType<typeof asMessage>
 type Message = $Call<typeof asMessage>
 ```
 
-## Installing Cleaners
+## Converting Data
 
-If you are using Deno, just import cleaners directly:
+Since JSON doesn't have its own date type, people usually send dates as strings:
 
 ```js
-import { asString } from 'https://deno.land/x/cleaners/mod.ts'
+{ "birthday": "2010-04-01" }
 ```
 
-If you are using Node, first install the package using `npm i cleaners` or `yarn add cleaners`, and then import it using either syntax:
+It's not enough to check that `birthday` is a string - the contents need to be parsed and validated as well. Fortunately, cleaners can do this. The `asDate` cleaner will actually parse strings into Javascript date objects, solving this problem.
+
+## Uncleaning
+
+When cleaners do additional data conversions, such as parsing strings into dates, it is useful to be able to undo those conversions. For instance, if a cleaner parses data from disk, those changes need to be undone before writing the file back to disk.
+
+To handle cases like this, use the `uncleaner` function:
 
 ```js
-// The oldschool way:
-const { asString } = require('cleaners')
+const asFile = asJSON(asObject({ lastLogin: asDate }))
+const wasFile = uncleaner(asFile)
+```
 
-// Or using Node's new native module support:
-import { asString } from 'cleaners'
+The `wasFile` function will undo the conversions performed in the `asFile` cleaner. In this example, it will convert the date back into a string, and then encode everything back into JSON.
+
+```js
+// Read & parse the file:
+const file = asFile(fs.readFileSync('lastLogin.json', 'utf8'))
+
+// Make changes:
+console.log(file.lastLogin)
+file.lastLogin = new Date()
+
+// Re-encode and write the file:
+fs.writeFileSync('lastLogin.json', wasFile(file))
 ```

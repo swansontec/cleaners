@@ -30,25 +30,12 @@ export function asNone(raw) {
   return undefined
 }
 
-export function asDate(raw) {
-  if (typeof raw !== 'string' && !(raw instanceof Date)) {
-    throw new TypeError('Expected a date string')
-  }
-
-  const out = new Date(raw)
-  if (out.toJSON() == null) throw new TypeError('Invalid date format')
-  return out
-}
-
 export function asUnknown(raw) {
   return raw
 }
 
-// nested types ----------------------------------------------------------------
+// data structures -----------------------------------------------------------
 
-/**
- * Makes a cleaner that accepts an array with the given item type.
- */
 export function asArray(cleaner) {
   return function asArray(raw) {
     if (!Array.isArray(raw)) {
@@ -67,16 +54,6 @@ export function asArray(cleaner) {
   }
 }
 
-/**
- * Makes a cleaner that accepts an object.
- *
- * If asObject receives a single cleaner function,
- * it will will use that to clean all the object's own enumerable properties
- * (except "__proto__", which gets filtered out).
- *
- * Otherwise, if asObject receives an object with cleaners as properties,
- * it will apply each cleaner to the matching key in the object.
- */
 export function asObject(shape) {
   // The key-value version:
   if (typeof shape === 'function') {
@@ -135,35 +112,8 @@ export function asObject(shape) {
   return out
 }
 
-/**
- * Deprecated. Use `asObject` directly.
- */
-export const asMap = asObject
+// branching -----------------------------------------------------------------
 
-export function asJSON(cleaner) {
-  return function asJSON(raw) {
-    const value = JSON.parse(asString(raw))
-    try {
-      return cleaner(value)
-    } catch (error) {
-      throw locateError(error, 'JSON.parse()', 11)
-    }
-  }
-}
-
-/**
- * Unpacks a value that may be void or null,
- * returning a fallback value (or `undefined`) if missing.
- */
-export function asOptional(cleaner, fallback) {
-  return function asOptional(raw) {
-    return raw != null ? cleaner(raw) : fallback
-  }
-}
-
-/**
- * Makes a cleaner that accepts either of the given types.
- */
 export function asEither(a, b) {
   return function asEither(raw) {
     try {
@@ -174,10 +124,6 @@ export function asEither(a, b) {
   }
 }
 
-/**
- * Unpacks a value that may be void or null,
- * returning a fallback value (or `undefined`) if missing.
- */
 export function asMaybe(cleaner, fallback) {
   return function asMaybe(raw) {
     try {
@@ -188,7 +134,69 @@ export function asMaybe(cleaner, fallback) {
   }
 }
 
-// helpers ---------------------------------------------------------------------
+export function asOptional(cleaner, fallback) {
+  return function asOptional(raw) {
+    return raw != null ? cleaner(raw) : fallback
+  }
+}
+
+// parsing -------------------------------------------------------------------
+
+let uncleaning = 0
+
+export function asCodec(cleaner, uncleaner) {
+  return function asCodec(raw) {
+    return uncleaning > 0 ? uncleaner(raw) : cleaner(raw)
+  }
+}
+
+export const asDate = asCodec(
+  function asDate(raw) {
+    if (typeof raw !== 'string' && !(raw instanceof Date)) {
+      throw new TypeError('Expected a date string')
+    }
+
+    const out = new Date(raw)
+    if (out.toJSON() == null) throw new TypeError('Invalid date format')
+    return out
+  },
+  function wasDate(clean) {
+    return clean.toISOString()
+  }
+)
+
+export function asJSON(cleaner) {
+  return asCodec(
+    function asJSON(raw) {
+      const value = JSON.parse(asString(raw))
+      try {
+        return cleaner(value)
+      } catch (error) {
+        throw locateError(error, 'JSON.parse()', 11)
+      }
+    },
+    function wasJSON(clean) {
+      return JSON.stringify(cleaner(clean))
+    }
+  )
+}
+
+export function uncleaner(cleaner) {
+  return function uncleaner(raw) {
+    try {
+      ++uncleaning
+      return cleaner(raw)
+    } finally {
+      --uncleaning
+    }
+  }
+}
+
+// deprecated ----------------------------------------------------------------
+
+export const asMap = asObject
+
+// helpers -------------------------------------------------------------------
 
 /**
  * Adds location information to an error message.

@@ -1,14 +1,22 @@
 # Guides
 
-## Converting Data
+## Installing Cleaners
 
-Since JSON doesn't have its own date type, people usually send dates as strings:
+If you are using Deno, just import cleaners directly:
 
 ```js
-{ "birthday": "2010-04-01" }
+import { asString } from 'https://deno.land/x/cleaners/mod.ts'
 ```
 
-It's not enough to check that `birthday` is a string - the contents need to be parsed and validated as well. Fortunately, cleaners can do this. The `asDate` cleaner will actually parse strings into Javascript date objects, solving this problem.
+If you are using Node, first install the package using `npm i cleaners` or `yarn add cleaners`, and then import it using either syntax:
+
+```js
+// The oldschool way:
+const { asString } = require('cleaners')
+
+// Or using Node's new native module support:
+import { asString } from 'cleaners'
+```
 
 ## Writing Custom Cleaners
 
@@ -23,16 +31,21 @@ function asEvenNumber(raw: any): number {
 }
 ```
 
-Or extra data conversions:
+You can pass this function to `asObject` or any of the others helpers, and they will work perfectly, including TypeScript & Flow return-type inference.
+
+If your clenaer performs data conversions, wrap it in the `asCodec` helper:
 
 ```js
 import { asString, Cleaner } from 'cleaners'
 import { base64 } from 'rfc4648'
 
-const asBase64Data: Cleaner<Uint8Array> = raw => base64.parse(asString(raw))
+const asBase64: Cleaner<Uint8Array> = asCodec(
+  raw => base64.parse(asString(raw))
+  clean => base64.stringify(clean)
+)
 ```
 
-You can pass these functions to `asObject` or any of the others helpers, and they will work perfectly, including TypeScript & Flow return-type inference.
+The first parameter to `asCodec` is the cleaner, and the second parameter is the un-cleaner.
 
 ## Recursive Cleaners
 

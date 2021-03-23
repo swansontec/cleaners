@@ -4,6 +4,7 @@
 import {
   asArray,
   asBoolean,
+  asCodec,
   asDate,
   asEither,
   asJSON,
@@ -19,9 +20,15 @@ import {
   asUnknown
 } from '../src/index.js'
 
+const asUnixDate = asCodec(
+  raw => new Date(1000 * asNumber(raw)),
+  clean => clean.valueOf() / 1000
+)
+
 type Expected = {
   array: string[],
   date: Date,
+  unixDate: Date,
   either: string | number,
   json: number[],
   map: { [key: string]: number },
@@ -45,6 +52,7 @@ type Expected = {
 const cleaner = asObject({
   array: asArray(asString),
   date: asDate,
+  unixDate: asUnixDate,
   either: asEither(asString, asNumber),
   json: asJSON(asArray(asNumber)),
   map: asMap(asNumber),
