@@ -1,5 +1,11 @@
 # cleaners
 
+## 0.3.8 (2021-03-23)
+
+- Expand the readme into an https://cleaners.js.org website.
+- Move the documentation comments into the `.d.ts` file so they can appear in tooltips.
+- Add the `asCodec` and `uncleaner` functions.
+
 ## 0.3.7 (2021-03-02)
 
 - Re-work the asObject cleaner.
