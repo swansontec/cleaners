@@ -80,21 +80,3 @@ type Message = ReturnType<typeof asMessage>
 // Flow:
 type Message = $Call<typeof asMessage>
 ```
-
-## Installing Cleaners
-
-If you are using Deno, just import cleaners directly:
-
-```js
-import { asString } from 'https://deno.land/x/cleaners/mod.ts'
-```
-
-If you are using Node, first install the package using `npm i cleaners` or `yarn add cleaners`, and then import it using either syntax:
-
-```js
-// The oldschool way:
-const { asString } = require('cleaners')
-
-// Or using Node's new native module support:
-import { asString } from 'cleaners'
-```
