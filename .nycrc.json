@@ -1,9 +1,9 @@
 {
-  "include": [
-    "src/**/*.js"
-  ],
-  "require": [
-    "sucrase/register"
-  ],
-  "all": true
+  "include": ["src/**/*.js"],
+  "require": ["sucrase/register"],
+  "check-coverage": true,
+  "branches": 100,
+  "functions": 100,
+  "lines": 100,
+  "statements": 100
 }
