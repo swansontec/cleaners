@@ -28,15 +28,16 @@
     "/src/*"
   ],
   "scripts": {
-    "build.flow": "flow",
-    "build.lib": "rollup -c; cp src/index.js.flow lib",
-    "build.types": "tsc",
     "clean": "rimraf lib",
-    "fix": "npm run lint -- --fix",
-    "lint": "eslint --ext .js,.ts .",
-    "precommit": "lint-staged && npm-run-all -p test build.*",
-    "prepare": "npm-run-all clean -p build.*",
-    "test": "nyc mocha 'test/**/*.test.js'"
+    "fix": "eslint . --fix",
+    "flow": "flow",
+    "lib": "rollup -c; cp src/index.js.flow lib",
+    "lint": "eslint .",
+    "precommit": "lint-staged && npm-run-all -p flow types",
+    "prepare": "npm-run-all clean -p lib types",
+    "test": "nyc mocha 'test/**/*.test.js'",
+    "types": "tsc",
+    "verify": "npm-run-all -p flow types -s lib lint test"
   },
   "husky": {
     "hooks": {
