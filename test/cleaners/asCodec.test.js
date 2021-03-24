@@ -11,7 +11,6 @@ describe('asCodec', function () {
     const raw = '{"lastLogin":"2020-02-20T00:00:00.000Z"}'
 
     const clean = asFile(raw)
-    console.log(clean.lastLogin)
     expect(clean).deep.equals({ lastLogin: new Date('2020-02-20') })
     expect(wasFile(clean)).deep.equals(raw)
   })
