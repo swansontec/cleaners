@@ -32,6 +32,10 @@ export declare const asString: Cleaner<string>
 export declare const asUndefined: Cleaner<undefined>
 export declare const asUnknown: Cleaner<unknown>
 
+export declare function asValue<
+  T extends boolean | null | number | string | undefined
+>(value: T): Cleaner<T>
+
 // data structures -----------------------------------------------------------
 
 /**

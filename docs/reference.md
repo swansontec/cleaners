@@ -6,7 +6,6 @@ Primitive values:
 - `asNumber` - Accepts & returns a `number`.
 - `asString` - Accepts & returns a `string`.
 - `asNull` - Accepts & returns `null`.
-- `asNone` - Accepts & returns `undefined`, but accepts `null` as well.
 - `asUndefined` - Accepts & returns `undefined`.
 - `asUnknown` - Accepts anything.
 
@@ -31,6 +30,11 @@ Parsing:
 Deprecated:
 
 - `asMap` - Renamed to [`asObject`](#asObject).
+
+Deprecated:
+
+- `asMap` - Deprecated alias for `asObject`.
+- `asNone` - Use `asOptional(asValue(null))` instead.
 
 ## asArray
 

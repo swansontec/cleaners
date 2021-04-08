@@ -5,10 +5,7 @@ export function asBoolean(raw) {
   return raw
 }
 
-export function asNull(raw) {
-  if (raw !== null) throw new TypeError('Expected null')
-  return null
-}
+export const asNull = asValue(null)
 
 export function asNumber(raw) {
   if (typeof raw !== 'number') throw new TypeError('Expected a number')
@@ -20,15 +17,9 @@ export function asString(raw) {
   return raw
 }
 
-export function asUndefined(raw) {
-  if (raw !== undefined) throw new TypeError('Unexpected value')
-  return undefined
-}
+export const asUndefined = asValue(undefined)
 
-export function asNone(raw) {
-  if (raw != null) throw new TypeError('Unexpected value')
-  return undefined
-}
+export const asNone = asOptional(asNull)
 
 export function asUnknown(raw) {
   return raw
@@ -191,6 +182,15 @@ export function uncleaner(cleaner) {
     } finally {
       --uncleaning
     }
+  }
+}
+
+export function asValue(value) {
+  return function asValue(raw) {
+    if (raw !== value) {
+      throw new TypeError(`Expected ${JSON.stringify(value)}`)
+    }
+    return raw
   }
 }
 

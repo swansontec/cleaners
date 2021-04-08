@@ -46,8 +46,8 @@ describe('asNone', function () {
   it('accepts only null or undefined', function () {
     expect(asNone(null)).equals(undefined)
     expect(asNone(undefined)).equals(undefined)
-    expect(() => asNone(false)).throws(TypeError, 'Unexpected value')
-    expect(() => asNone('undefined')).throws(TypeError, 'Unexpected value')
+    expect(() => asNone(false)).throws(TypeError, 'Expected null')
+    expect(() => asNone('undefined')).throws(TypeError, 'Expected null')
   })
 })
 
@@ -63,9 +63,12 @@ describe('asNull', function () {
 describe('asUndefined', function () {
   it('accepts only undefined', function () {
     expect(asUndefined(undefined)).equals(undefined)
-    expect(() => asUndefined(null)).throws(TypeError, 'Unexpected value')
-    expect(() => asUndefined(false)).throws(TypeError, 'Unexpected value')
-    expect(() => asUndefined('undefined')).throws(TypeError, 'Unexpected value')
+    expect(() => asUndefined(null)).throws(TypeError, 'Expected undefined')
+    expect(() => asUndefined(false)).throws(TypeError, 'Expected undefined')
+    expect(() => asUndefined('undefined')).throws(
+      TypeError,
+      'Expected undefined'
+    )
   })
 })
 
