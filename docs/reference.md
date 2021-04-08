@@ -30,11 +30,7 @@ Parsing:
 Deprecated:
 
 - `asMap` - Renamed to [`asObject`](#asObject).
-
-Deprecated:
-
-- `asMap` - Deprecated alias for `asObject`.
-- `asNone` - Use `asOptional(asValue(null))` instead.
+- `asNone` - Use `asOptional(asNull)` instead.
 
 ## asArray
 

@@ -1,5 +1,10 @@
 # cleaners
 
+## 0.3.9 (2021-04-08)
+
+- Allow `asEither` to take any number of arguments.
+- Add an `asValue` cleaner.
+
 ## 0.3.8 (2021-03-23)
 
 - Expand the readme into an https://cleaners.js.org website.

@@ -1,6 +1,6 @@
 {
   "name": "cleaners",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "description": "Cleans & validates untrusted data, with TypeScript & Flow support",
   "keywords": [
     "conversion",
