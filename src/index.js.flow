@@ -4,7 +4,7 @@
 
 export type Cleaner<T> = (raw: any) => T
 
-export type Uncleaner<T> = (clean: T) => mixed
+export type Uncleaner<T> = (clean: T) => any
 
 export type ObjectCleaner<T> = Cleaner<T> & {
   +shape: $ObjMap<T, <T>(type: T) => Cleaner<T>>,

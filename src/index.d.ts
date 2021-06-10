@@ -8,7 +8,7 @@ export declare type Cleaner<T> = (raw: any) => T
 /**
  * Undoes the effect of a cleaner.
  */
-export declare type Uncleaner<T> = (clean: T) => unknown
+export declare type Uncleaner<T> = (clean: T) => any
 
 declare type CleanerShape<T> = {
   [K in keyof T]: Cleaner<T[K]>
