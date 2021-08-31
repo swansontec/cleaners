@@ -34,15 +34,10 @@
     "lib": "rollup -c; cp src/index.js.flow lib",
     "lint": "eslint .",
     "precommit": "lint-staged && npm-run-all -p flow types",
-    "prepare": "npm-run-all clean -p lib types",
+    "prepare": "husky install && npm-run-all clean -p lib types",
     "test": "nyc mocha 'test/**/*.test.js'",
     "types": "tsc",
     "verify": "npm-run-all -p flow types -s lib lint test"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run precommit"
-    }
   },
   "lint-staged": {
     "*.{js,ts}": "eslint"
@@ -63,7 +58,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-simple-import-sort": "^6.0.1",
     "flow-bin": "^0.143.1",
-    "husky": "^4.3.0",
+    "husky": "^7.0.2",
     "lint-staged": "^10.5.3",
     "mocha": "^8.1.2",
     "npm-run-all": "^4.1.5",
