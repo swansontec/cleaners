@@ -37,19 +37,19 @@ interface Expected {
   optional1: string | undefined
   optional2: string
 
-  literal1: 'foo'
-  literal2: 'bar'
-  literal3: 123
-  literal4: null
-  literal5: undefined
-  literal6: true
+  booleanValue: true
+  numberValue: 123
+  stringValue: 'foo'
+  nullValue: null
+  undefinedValue: undefined
+  enumValue: 'small' | 'medium' | 'large'
 
   // Primitives:
   boolean: boolean
-  none: undefined
-  null: null
   number: number
   string: string
+  none: undefined
+  null: null
   undefined: undefined
   unknown: unknown
 }
@@ -68,19 +68,19 @@ const cleaner = asObject({
   optional1: asOptional(asString),
   optional2: asOptional(asString, ''),
 
-  literal1: asValue('foo'),
-  literal2: asValue('bar'),
-  literal3: asValue(123),
-  literal4: asValue(null),
-  literal5: asValue(undefined),
-  literal6: asValue(true),
+  booleanValue: asValue(true),
+  numberValue: asValue(123),
+  stringValue: asValue('foo'),
+  nullValue: asValue(null),
+  undefinedValue: asValue(undefined),
+  enumValue: asValue('small', 'medium', 'large'),
 
   // Primitives:
   boolean: asBoolean,
-  none: asNone,
-  null: asNull,
   number: asNumber,
   string: asString,
+  none: asNone,
+  null: asNull,
   undefined: asUndefined,
   unknown: asUnknown
 })

@@ -8,6 +8,7 @@ Primitive values:
 - `asNull` - Accepts & returns `null`.
 - `asUndefined` - Accepts & returns `undefined`.
 - `asUnknown` - Accepts anything.
+- [`asValue`](#asValue) - Builds a cleaner that accepts a literal value.
 
 Data structures:
 
@@ -180,6 +181,34 @@ asCounter(null) // returns 0
 const asMaximum = asOptional(asNumber)
 
 asMaximum(null) // returns undefined
+```
+
+## asValue
+
+`asValue` creates a cleaner that accepts a specific literal value:
+
+```js
+const asTrue = asValue(true)
+
+asTrue(true) // returns true
+asTrue(false) // TypeError: Expected true
+```
+
+Passing multiple arguments to `asValue` will create an enum cleaner that accepts any of the provided values:
+
+```js
+const asSize = asValue('small', 'medium', 'large')
+
+asSize('large') // returns 'large'
+asSize('huge') // TypeError: Expected one of: 'small' | 'medium' | 'large'
+```
+
+Sadly, Flow has trouble inferring the `asValue` return type (but Typescript works fine). To avoid producing overly-broad types like `Cleaner<string>`, Flow needs explicit type annotations:
+
+```js
+// Only Flow needs this:
+const asTrue: Cleaner<true> = asValue<true>
+const asTeam: Cleaner<'red' | 'blue'> = asValue('red', 'blue')
 ```
 
 ## uncleaner
