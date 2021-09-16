@@ -99,7 +99,7 @@ declare function asCodec<T>(
 ): Cleaner<T>
 
 /**
- * Parses a string into a Javascript Date object.
+ * Parses a string into a JavaScript Date object.
  */
 export declare const asDate: Cleaner<Date>
 

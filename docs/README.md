@@ -13,7 +13,7 @@ Do you ever read JSON data from the outside world? If you, you should probably c
 
 ## What is a Cleaner?
 
-A cleaner is just an ordinary Javascript function that validates some data. If the data is good, the cleaner returns it. If the data is bad, the the cleaner throws an exception. Here is an example:
+A cleaner is just an ordinary JavaScript function that validates some data. If the data is good, the cleaner returns it. If the data is bad, the the cleaner throws an exception. Here is an example:
 
 ```js
 import { asString } from 'cleaners'
@@ -89,7 +89,7 @@ Since JSON doesn't have its own date type, people usually send dates as strings:
 { "birthday": "2010-04-01" }
 ```
 
-It's not enough to check that `birthday` is a string - the contents need to be parsed and validated as well. Fortunately, cleaners can do this. The `asDate` cleaner will actually parse strings into Javascript date objects, solving this problem.
+It's not enough to check that `birthday` is a string - the contents need to be parsed and validated as well. Fortunately, cleaners can do this. The `asDate` cleaner will actually parse strings into JavaScript `Date` objects, solving this problem.
 
 ## Uncleaning
 

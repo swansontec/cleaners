@@ -46,7 +46,7 @@ const asStringList = asArray(asString)
 `asCodec` creates a cleaner that can undo its own data conversion. This is useful for cleaners that parse strings or similar things.
 
 ```js
-// Converts UNIX timestamps to / from  Javascript Date objects:
+// Converts UNIX timestamps to / from  JavaScript Date objects:
 const asUnixDate: Cleaner<Date> = asCodec(
   raw => new Date(1000 * asNumber(raw)),
   clean => clean.valueOf() / 1000
@@ -117,7 +117,7 @@ This type will silence all exceptions from the cleaner(s) it composes. Only use 
 
 ## asObject
 
-`asObject` builds an object cleaner. The cleaner will accept any Javascript object and make a clean copy.
+`asObject` builds an object cleaner. The cleaner will accept any JavaScript object and make a clean copy.
 
 If `asObject` receives a single cleaner as its parameter, it will apply that cleaner to each property in the object. This is useful when objects act as key / value maps:
 
@@ -134,7 +134,7 @@ asNumberMap({ a: false })
 
 You can use `asObject(asUnknown)` if you just want to check that something is an object, and don't care what its contents are.
 
-To clean an object with known property names, pass a "shape" object to `asObject`. Each propery in the "shape" object should be a cleaner that applies to the matching key in the input object. The cleaner won't copy any unknown properties:
+To clean an object with known property names, pass a "shape" object to `asObject`. Each property in the "shape" object should be a cleaner that applies to the matching key in the input object. The cleaner won't copy any unknown properties:
 
 ```js
 // Makes a Cleaner<{ key: string }>:
@@ -193,4 +193,4 @@ const wasThing: Uncleaner<T> = uncleaner(asThing)
 
 This un-cleaner will un-do any data conversions (such as string parsing) performed by the cleaner.
 
-Un-cleaners have the oposite data types as their corresponding cleaner. Since all cleaners accept `unknown` and return some known type `T`, the matching un-cleaner will accept type `T` and return `unknown`.
+Un-cleaners have the opposite data types as their corresponding cleaner. Since all cleaners accept `unknown` and return some known type `T`, the matching un-cleaner will accept type `T` and return `unknown`.
