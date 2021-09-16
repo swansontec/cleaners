@@ -1,9 +1,12 @@
 # cleaners
 
+## 0.3.11 (2021-09-16)
+
+- changed: Use `asValue` to clean enum types, by allowing it to take multiple arguments.
+
 ## 0.3.10 (2021-09-16)
 
 - changed: Return `any` from uncleaners. This mirrors the idea that cleaners accept `any`.
-- changed: Use `asValue` to clean enum types, by allowing it to take multiple arguments.
 - fixed: Correct documentation typos.
 
 ## 0.3.9 (2021-04-08)
