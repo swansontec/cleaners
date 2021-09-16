@@ -47,7 +47,7 @@ import { asDate, asString } from 'cleaners'
 
 asString('hey') // Returns 'hey'
 asString(1) // TypeError: Expected a string
-asDate('2020-02-20') // Returns a Javascript Date object
+asDate('2020-02-20') // Returns a JavaScript Date object
 ```
 
 To handle objects, arrays, and other nested data types, this library includes some helpers for combining `Cleaner` functions together:

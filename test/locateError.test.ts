@@ -12,7 +12,7 @@ describe('locateError', function () {
     try {
       asDemoObject({ map: { 'odd "item"': ['1'] } })
       throw new Error('Expecting an error')
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).equals(
         'Expected a number at .map["odd \\"item\\""][0]'
       )
@@ -21,8 +21,8 @@ describe('locateError', function () {
   })
 
   it('avoids non-error objects', function () {
-    function asBomb() {
-      // eslint-disable-next-line no-throw-literal
+    function asBomb(): void {
+      // eslint-disable-next-line @typescript-eslint/no-throw-literal
       throw { message: 'boom' }
     }
     const asDemoObject = asObject({
@@ -32,7 +32,7 @@ describe('locateError', function () {
     try {
       asDemoObject({ payload: 'ouch' })
       throw new Error('Expecting an error')
-    } catch (error) {
+    } catch (error: any) {
       expect(error).not.instanceOf(Error)
       expect(error.message).equals('boom')
       expect(typeof error.insertStepAt).equals('undefined')
@@ -44,7 +44,7 @@ describe('locateError', function () {
     try {
       asNested({ json: '[false]' })
       throw new Error('Expecting an error')
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).equals('Expected a number at JSON.parse(.json)[0]')
     }
   })
