@@ -74,7 +74,7 @@ describe('asUnknown', function () {
   it('accepts anything', function () {
     const object = {}
 
-    expect(asUnknown()).equals(undefined)
+    expect(asUnknown(undefined)).equals(undefined)
     expect(asUnknown(1)).equals(1)
     expect(asUnknown(object)).equals(object)
   })
