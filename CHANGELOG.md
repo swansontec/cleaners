@@ -1,9 +1,15 @@
 # cleaners
 
+## 0.3.10 (2021-09-16)
+
+- changed: Return `any` from uncleaners. This mirrors the idea that cleaners accept `any`.
+- changed: Use `asValue` to clean enum types, by allowing it to take multiple arguments.
+- fixed: Correct documentation typos.
+
 ## 0.3.9 (2021-04-08)
 
-- Allow `asEither` to take any number of arguments.
-- Add an `asValue` cleaner.
+- added: Add an `asValue` cleaner.
+- changed: Allow `asEither` to take any number of arguments.
 
 ## 0.3.8 (2021-03-23)
 
@@ -16,7 +22,7 @@
 - Re-work the asObject cleaner.
   - When passed a single cleaner function, create a key-value cleaner like `asMap`.
   - When passed a shape object, also include a `withRest` method on the generated cleaner. This method cleans the object according to the shape, but also preserves unknown properties if present.
-- Deprecate `asMap`, sicne `asObject` handles this use-case now.
+- Deprecate `asMap`, since `asObject` handles this use-case now.
 
 ## 0.3.6 (2021-03-01)
 
@@ -46,8 +52,8 @@
 
 ## 0.3.1 (2020-08-31)
 
-- fix: Stop the Node 14 module entry point from instantly erroring.
-- fix: Adjust the object cleaner type definitions to give better tooltips & errors.
+- fixed: Stop the Node 14 module entry point from instantly erroring.
+- fixed: Adjust the object cleaner type definitions to give better tooltips & errors.
 
 ## 0.3.0 (2020-08-28)
 
