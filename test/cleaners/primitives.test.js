@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-expressions */
-
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 
@@ -26,7 +24,7 @@ describe('asNumber', function () {
   it('accepts only numbers', function () {
     expect(asNumber(0)).equals(0)
     expect(asNumber(-1)).equals(-1)
-    expect(asNumber(NaN)).is.NaN
+    expect(asNumber(NaN)).deep.equals(NaN)
     expect(asNumber(Infinity)).equals(Infinity)
     expect(() => asNumber(null)).throws(TypeError, 'Expected a number')
     expect(() => asNumber('0')).throws(TypeError, 'Expected a number')

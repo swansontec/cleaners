@@ -1,5 +1,4 @@
 // @flow
-/* eslint-disable no-unused-vars */
 
 import {
   asArray,
@@ -92,3 +91,7 @@ type Actual = $Call<typeof cleaner>
 // Check that Actual and Expected are equivalent in both directions:
 const checkForward = (value: Actual): Expected => value
 const checkReverse = (value: Expected): Actual => value
+
+const value = cleaner(undefined)
+checkForward(value)
+checkReverse(value)
