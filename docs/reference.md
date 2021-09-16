@@ -14,6 +14,7 @@ Data structures:
 
 - [`asArray`](#asArray) - Builds an array cleaner.
 - [`asObject`](#asObject) - Builds an object cleaner.
+- [`asTuple`](#asTuple) - Builds a fixed-length array cleaner.
 
 Branching:
 
@@ -181,6 +182,24 @@ asCounter(null) // returns 0
 const asMaximum = asOptional(asNumber)
 
 asMaximum(null) // returns undefined
+```
+
+## asTuple
+
+`asTuple` creates a cleaner that accepts fixed-length arrays where each position can have a different type. It accepts multiple arguments, one for each position in the array:
+
+```js
+const asOptions = asTuple(asString, asNumber)
+
+asOptions(['add', 1]) // returns ['add', 1]
+asOptions([1, 0]) // TypeError: Expected a string at [0]
+```
+
+Sadly, Flow has trouble inferring the `asTuple` return type (but Typescript works fine). To avoid returning overly loose types like `Array<number | string>` instead of `[string, number]`, Flow needs explicit type annotations:
+
+```js
+// Only Flow needs this:
+const asOptions: Cleaner<[string, number]> = asTuple(asString, asNumber)
 ```
 
 ## asValue

@@ -5,6 +5,7 @@ export * from './cleaners/asValue.js'
 // Data structures:
 export * from './cleaners/asArray.js'
 export * from './cleaners/asObject.js'
+export * from './cleaners/asTuple.js'
 
 // Branching:
 export * from './cleaners/asEither.js'

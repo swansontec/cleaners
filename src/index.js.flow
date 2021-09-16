@@ -38,6 +38,10 @@ declare export var asObject: {|
   <Shape>(shape: Shape): ObjectCleaner<$ObjMap<Shape, ReturnType>>
 |}
 
+declare export function asTuple<Shape>(
+  ...shape: Shape
+): Cleaner<$TupleMap<Shape, ReturnType>>
+
 // branching -----------------------------------------------------------------
 
 declare export var asEither: {|

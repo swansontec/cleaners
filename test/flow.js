@@ -1,6 +1,7 @@
 // @flow
 
 import {
+  type Cleaner,
   asArray,
   asBoolean,
   asCodec,
@@ -15,6 +16,7 @@ import {
   asObject,
   asOptional,
   asString,
+  asTuple,
   asUndefined,
   asUnknown,
   asValue
@@ -24,6 +26,9 @@ const asUnixDate = asCodec(
   raw => new Date(1000 * asNumber(raw)),
   clean => clean.valueOf() / 1000
 )
+
+// asTuple requires a type annotation in Flow:
+const asPair: Cleaner<[string, number]> = asTuple(asString, asNumber)
 
 type Expected = {
   array: string[],
@@ -38,6 +43,7 @@ type Expected = {
   object3: { when: Date },
   optional1: string | void,
   optional2: string,
+  tuple: [string, number],
 
   booleanValue: true,
   numberValue: 123,
@@ -69,6 +75,7 @@ const cleaner = asObject({
   object3: asObject({ when: asDate }).withRest,
   optional1: asOptional(asString),
   optional2: asOptional(asString, ''),
+  tuple: asPair,
 
   booleanValue: asValue(true),
   numberValue: asValue(123),
