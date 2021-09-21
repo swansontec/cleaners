@@ -13,6 +13,7 @@ import {
   asObject,
   asOptional,
   asString,
+  asTuple,
   asUndefined,
   asUnknown,
   asValue
@@ -36,6 +37,7 @@ interface Expected {
   object3: { when: Date }
   optional1: string | undefined
   optional2: string
+  tuple: [string, number]
 
   booleanValue: true
   numberValue: 123
@@ -67,6 +69,7 @@ const cleaner = asObject({
   object3: asObject({ when: asDate }).withRest,
   optional1: asOptional(asString),
   optional2: asOptional(asString, ''),
+  tuple: asTuple(asString, asNumber),
 
   booleanValue: asValue(true),
   numberValue: asValue(123),

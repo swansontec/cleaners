@@ -60,6 +60,13 @@ export declare function asObject<T extends object>(
   shape: CleanerShape<T>
 ): ObjectCleaner<T>
 
+/**
+ * Makes a cleaner that accepts a tuple.
+ */
+export declare function asTuple<T extends unknown[]>(
+  ...shape: CleanerShape<T>
+): Cleaner<T>
+
 // branching -----------------------------------------------------------------
 
 /**
