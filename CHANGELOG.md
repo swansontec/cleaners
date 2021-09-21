@@ -1,5 +1,9 @@
 # cleaners
 
+## 0.3.12 (2021-09-20)
+
+- added: Add an `asTuple` cleaner for fixed-length arrays.
+
 ## 0.3.11 (2021-09-16)
 
 - changed: Use `asValue` to clean enum types, by allowing it to take multiple arguments.
