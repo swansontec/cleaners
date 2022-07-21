@@ -1,5 +1,9 @@
 # cleaners
 
+## 0.3.13 (2022-07-21)
+
+- changed: Add more variants to the `asEither` Flow type, up to 16 arguments.
+
 ## 0.3.12 (2021-09-20)
 
 - added: Add an `asTuple` cleaner for fixed-length arrays.
