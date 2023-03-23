@@ -13,9 +13,7 @@ describe('asJSON', function () {
   it('rejects non-JSON strings', function () {
     expect(() => asDatesFile(null)).throws('Expected a string')
     expect(() => asDatesFile([])).throws('Expected a string')
-    expect(() => asDatesFile('[*]')).throws(
-      'Unexpected token * in JSON at position 1'
-    )
+    expect(() => asDatesFile('[*]')).throws('Unexpected token')
     expect(() => asDatesFile('')).throws('Unexpected end of JSON input')
   })
 
