@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 
-import { asNumber, asOptional } from '../../src/index.js'
+import { asArray, asNumber, asOptional } from '../../src/index.js'
 
 describe('asOptional', function () {
   const asMaybeNumber = asOptional(asNumber)
@@ -14,5 +14,18 @@ describe('asOptional', function () {
 
   it('rejects invalid contents', function () {
     expect(() => asMaybeNumber('boom')).throws(TypeError, 'Expected a number')
+  })
+
+  it('returns fallback values', function () {
+    const asSafeNumber = asOptional(asNumber, 0)
+    const asSafeNumbers = asOptional(asArray(asNumber), () => [])
+
+    // Simple fallback:
+    expect(asSafeNumber(undefined)).equals(0)
+
+    // Function-style fallback:
+    const fallback = asSafeNumbers(undefined)
+    expect(fallback).deep.equals([])
+    expect(asSafeNumbers(undefined)).not.equals(fallback)
   })
 })

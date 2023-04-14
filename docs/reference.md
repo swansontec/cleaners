@@ -100,7 +100,31 @@ asMaybe(23) // returns undefined
 asMaybe(null) // returns undefined
 ```
 
-This cleaner is useful as a type guard on your data:
+Alternatively, you can provide a fallback value:
+
+```js
+const asSize = asMaybe(asValue('small', 'medium', 'large'), 'medium')
+
+asSize('large') // returns 'large'
+asSize('bad') // returns 'medium'
+```
+
+If the fallback value is an array or an object, consider providing a fallback function instead of a fallback value. This function will return a fresh fallback value each time there is a problem:
+
+```js
+const asSafeNumbers = asMaybe(
+  asArray(asNumber),
+  // Generate a fresh fallback array each time:
+  () => []
+)
+
+const fallback = asSafeNumbers('bad') // returns []
+fallback.push(1) // This is safe to do, since the array is unique
+```
+
+This cleaner is useful if you just want to ignore invalid values.
+
+This cleaner is also useful if you your data could be one of several options, and you aren't sure which one it is:
 
 ```js
 const pizza = asMaybe(asPizza)(obj)
@@ -114,8 +138,6 @@ if (pizza != null) {
   // It's neither
 }
 ```
-
-This type will silence all exceptions from the cleaner(s) it composes. Only use on types for which you do not care why a value is not valid.
 
 ## asObject
 
@@ -182,6 +204,19 @@ asCounter(null) // returns 0
 const asMaximum = asOptional(asNumber)
 
 asMaximum(null) // returns undefined
+```
+
+If the fallback value is an array or an object, consider providing a fallback function instead of a fallback value. This function will return a fresh fallback value each time there is a problem:
+
+```js
+const asNumbers = asOptional(
+  asArray(asNumber),
+  // Generate a fresh fallback array each time:
+  () => []
+)
+
+const fallback = asNumbers(undefined) // returns []
+fallback.push(1) // This is safe to do, since the array is unique
 ```
 
 ## asTuple

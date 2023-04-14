@@ -2,6 +2,7 @@ import { expect } from 'chai'
 import { describe, it } from 'mocha'
 
 import {
+  asArray,
   asBoolean,
   asDate,
   asMaybe,
@@ -52,5 +53,18 @@ describe('asMaybe', function () {
     })
     // Date
     expect(asMaybeDate('10-10-2020')).instanceOf(Date)
+  })
+
+  it('returns fallback values', function () {
+    const asSafeNumber = asMaybe(asNumber, 0)
+    const asSafeNumbers = asMaybe(asArray(asNumber), () => [])
+
+    // Simple fallback:
+    expect(asSafeNumber('bad')).equals(0)
+
+    // Function-style fallback:
+    const fallback = asSafeNumbers('bad')
+    expect(fallback).deep.equals([])
+    expect(asSafeNumbers('bad')).not.equals(fallback)
   })
 })

@@ -3,7 +3,7 @@ export function asMaybe(cleaner, fallback) {
     try {
       return cleaner(raw)
     } catch (e) {
-      return fallback
+      return typeof fallback === 'function' ? fallback() : fallback
     }
   }
 }
