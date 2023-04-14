@@ -123,6 +123,6 @@ export declare function uncleaner<T>(cleaner: Cleaner<T>): Uncleaner<T>
 // deprecated ----------------------------------------------------------------
 
 /**
- * Deprecated. Use `asObject` directly.
+ * @deprecated Use `asObject` directly.
  */
 export declare const asMap: typeof asObject
