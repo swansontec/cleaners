@@ -81,7 +81,10 @@ export declare function asEither<T extends unknown[]>(
  * returning a fallback value (or `undefined`) if the cleaner throws.
  */
 export declare function asMaybe<T>(cleaner: Cleaner<T>): Cleaner<T | undefined>
-export declare function asMaybe<T>(cleaner: Cleaner<T>, fallback: T): Cleaner<T>
+export declare function asMaybe<T>(
+  cleaner: Cleaner<T>,
+  fallback: T | (() => T)
+): Cleaner<T>
 
 /**
  * Unpacks a value that may be void or null,
@@ -92,7 +95,7 @@ export declare function asOptional<T>(
 ): Cleaner<T | undefined>
 export declare function asOptional<T>(
   cleaner: Cleaner<T>,
-  fallback: T
+  fallback: T | (() => T)
 ): Cleaner<T>
 
 // parsing -------------------------------------------------------------------
@@ -123,6 +126,6 @@ export declare function uncleaner<T>(cleaner: Cleaner<T>): Uncleaner<T>
 // deprecated ----------------------------------------------------------------
 
 /**
- * Deprecated. Use `asObject` directly.
+ * @deprecated Use `asObject` directly.
  */
 export declare const asMap: typeof asObject

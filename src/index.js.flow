@@ -208,12 +208,20 @@ declare export var asEither: {|
 
 declare export var asMaybe: {|
   <T>(cleaner: Cleaner<T>): Cleaner<T | void>,
-  <T>(cleaner: Cleaner<T>, fallback: $Call<Cleaner<T>>): Cleaner<T>
+  <T>(
+    cleaner: Cleaner<T>,
+    // The extra $Call prevents Flow from inferring T from the fallback:
+    fallback: $Call<Cleaner<T>> | (() => $Call<Cleaner<T>>)
+  ): Cleaner<T>
 |}
 
 declare export var asOptional: {|
   <T>(cleaner: Cleaner<T>): Cleaner<T | void>,
-  <T>(cleaner: Cleaner<T>, fallback: $Call<Cleaner<T>>): Cleaner<T>
+  <T>(
+    cleaner: Cleaner<T>,
+    // The extra $Call prevents Flow from inferring T from the fallback:
+    fallback: $Call<Cleaner<T>> | (() => $Call<Cleaner<T>>)
+  ): Cleaner<T>
 |}
 
 // parsing -------------------------------------------------------------------
