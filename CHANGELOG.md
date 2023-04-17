@@ -1,5 +1,9 @@
 # cleaners
 
+## 0.3.14 (2023-04-17)
+
+- added: Accept fallback functions for `asOptional` and `asMaybe`, to generate fresh fallback values each time there is a problem.
+
 ## 0.3.13 (2022-07-21)
 
 - changed: Add more variants to the `asEither` Flow type, up to 16 arguments.
