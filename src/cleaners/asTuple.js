@@ -1,4 +1,4 @@
-import { locateError } from '../locateError'
+import { locateError } from '../locateError.js'
 
 export function asTuple(...shape) {
   function asTuple(raw) {

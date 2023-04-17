@@ -1,6 +1,6 @@
-import { locateError } from '../locateError'
-import { asCodec } from './asCodec'
-import { asString } from './primitives'
+import { locateError } from '../locateError.js'
+import { asCodec } from './asCodec.js'
+import { asString } from './primitives.js'
 
 export function asJSON(cleaner) {
   return asCodec(

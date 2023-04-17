@@ -20,7 +20,7 @@ import {
   asUndefined,
   asUnknown,
   asValue
-} from '../src'
+} from '../src/index.js'
 
 const asUnixDate = asCodec(
   raw => new Date(1000 * asNumber(raw)),
