@@ -1,5 +1,10 @@
 # cleaners
 
+## 0.3.15 (2023-04-18)
+
+- fixed: Update package.json to work with recent versions of Webpack, Rollup, and TypeScript.
+- fixed: Get Deno working again by adding file extensions to all import statements.
+
 ## 0.3.14 (2023-04-17)
 
 - added: Accept fallback functions for `asOptional` and `asMaybe`, to generate fresh fallback values each time there is a problem.
