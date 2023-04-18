@@ -9,6 +9,7 @@
   },
   "plugins": ["simple-import-sort"],
   "rules": {
+    "import/extensions": ["error", "always"],
     "simple-import-sort/imports": "error"
   }
 }

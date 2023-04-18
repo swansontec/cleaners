@@ -1,6 +1,5 @@
 import babel from '@rollup/plugin-babel'
 import filesize from 'rollup-plugin-filesize'
-import mjs from 'rollup-plugin-mjs-entry'
 
 import packageJson from './package.json'
 
@@ -17,5 +16,5 @@ export default {
     { file: packageJson.main, format: 'cjs' },
     { file: packageJson.module, format: 'es' }
   ],
-  plugins: [babel(babelOpts), filesize(sizeOpts), mjs()]
+  plugins: [babel(babelOpts), filesize(sizeOpts)]
 }

@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { describe, it } from 'mocha'
 
-import { asNumber, asString, asTuple } from '../../src/'
+import { asNumber, asString, asTuple } from '../../src/index.js'
 
 describe('asTuple', function () {
   const asNumberwang = asTuple(asNumber, asString)
