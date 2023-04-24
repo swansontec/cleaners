@@ -1,5 +1,9 @@
 # cleaners
 
+## 0.3.16 (2023-04-24)
+
+- fixed: Change the CommonJS file extension back to "js", to work better with bundlers like Metro.
+
 ## 0.3.15 (2023-04-18)
 
 - fixed: Update package.json to work with recent versions of Webpack, Rollup, and TypeScript.
