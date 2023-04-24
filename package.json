@@ -19,12 +19,12 @@
       },
       "require": {
         "types": "./src/index.d.ts",
-        "default": "./lib/cleaners.cjs"
+        "default": "./lib/cjs/cleaners.js"
       }
     },
     "./package.json": "./package.json"
   },
-  "main": "./lib/cleaners.cjs",
+  "main": "./lib/cjs/cleaners.js",
   "module": "./lib/cleaners.js",
   "types": "./src/index.d.ts",
   "files": [
@@ -38,7 +38,7 @@
     "clean": "rimraf lib",
     "fix": "eslint . --fix",
     "flow": "flow",
-    "lib": "rollup -c; cp src/index.js.flow lib",
+    "lib": "rollup -c && cp src/index.js.flow lib && echo '{\"type\":\"commonjs\"}' > lib/cjs/package.json",
     "lint": "eslint .",
     "precommit": "lint-staged && npm-run-all -p flow types",
     "prepare": "husky install && npm-run-all clean -p lib types",
