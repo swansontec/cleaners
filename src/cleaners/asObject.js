@@ -1,11 +1,12 @@
 import { locateError } from '../locateError.js'
+import { showValue } from '../showValue.js'
 
 export function asObject(shape) {
   // The key-value version:
   if (typeof shape === 'function') {
     return function asObject(raw) {
       if (typeof raw !== 'object' || raw == null) {
-        throw new TypeError('Expected an object')
+        throw new TypeError('Expected an object, got ' + showValue(raw))
       }
 
       const out = {}
@@ -28,7 +29,7 @@ export function asObject(shape) {
   function bindObjectShape(keepRest) {
     return function asObject(raw) {
       if (typeof raw !== 'object' || raw == null) {
-        throw new TypeError('Expected an object')
+        throw new TypeError('Expected an object, got ' + showValue(raw))
       }
 
       let i

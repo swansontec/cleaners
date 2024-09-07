@@ -21,7 +21,7 @@ describe('asArray', function () {
   it('rejects invalid contents', function () {
     expect(() => asStringArray([1])).throws(
       TypeError,
-      'Expected a string at [0]'
+      'Expected a string, got 1 at [0]'
     )
   })
 })
