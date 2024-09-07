@@ -19,10 +19,10 @@ describe('asJSON', function () {
 
   it('rejects invalid contents', function () {
     expect(() => asDatesFile('null')).throws(
-      'Expected an array at JSON.parse()'
+      'Expected an array, got null at JSON.parse()'
     )
     expect(() => asDatesFile('[null]')).throws(
-      'Expected a date string at JSON.parse()[0]'
+      'Expected a date string, got null at JSON.parse()[0]'
     )
   })
 })

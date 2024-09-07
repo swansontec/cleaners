@@ -14,7 +14,7 @@ describe('locateError', function () {
       throw new Error('Expecting an error')
     } catch (error: any) {
       expect(error.message).equals(
-        'Expected a number at .map["odd \\"item\\""][0]'
+        'Expected a number, got "1" at .map["odd \\"item\\""][0]'
       )
       expect(typeof error.insertStepAt).equals('number')
     }
@@ -45,7 +45,9 @@ describe('locateError', function () {
       asNested({ json: '[false]' })
       throw new Error('Expecting an error')
     } catch (error: any) {
-      expect(error.message).equals('Expected a number at JSON.parse(.json)[0]')
+      expect(error.message).equals(
+        'Expected a number, got false at JSON.parse(.json)[0]'
+      )
     }
   })
 })

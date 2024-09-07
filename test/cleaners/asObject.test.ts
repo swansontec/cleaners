@@ -32,7 +32,7 @@ describe('asObject', function () {
   it('rejects invalid contents', function () {
     expect(() => asNumberMap({ a: false })).throws(
       TypeError,
-      'Expected a number at ["a"]'
+      'Expected a number, got false at ["a"]'
     )
   })
 
@@ -65,14 +65,14 @@ describe('asObject', function () {
     expect(() => asDemoObject(null)).throws(TypeError, 'Expected an object')
     expect(() => asDemoObject.withRest(null)).throws(
       TypeError,
-      'Expected an object'
+      'Expected an object, got null'
     )
   })
 
   it('rejects invalid shaped contents', function () {
     expect(() => asDemoObject({ here: 'hi', maybe: 1 })).throws(
       TypeError,
-      'Expected a string at .maybe'
+      'Expected a string, got 1 at .maybe'
     )
   })
 

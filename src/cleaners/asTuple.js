@@ -1,9 +1,10 @@
 import { locateError } from '../locateError.js'
+import { showValue } from '../showValue.js'
 
 export function asTuple(...shape) {
   function asTuple(raw) {
     if (!Array.isArray(raw)) {
-      throw new TypeError('Expected an array')
+      throw new TypeError('Expected an array, got ' + showValue(raw))
     }
 
     const out = []

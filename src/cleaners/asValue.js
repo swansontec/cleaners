@@ -1,3 +1,5 @@
+import { showValue } from '../showValue.js'
+
 export function asValue(...values) {
   return function asValue(raw) {
     for (let i = 0; i < values.length; ++i) {
@@ -11,6 +13,7 @@ export function asValue(...values) {
       if (i > 0) message += ' | '
       message += JSON.stringify(values[i])
     }
+    message += ', got ' + showValue(raw)
     throw new TypeError(message)
   }
 }
