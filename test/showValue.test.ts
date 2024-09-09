@@ -28,5 +28,6 @@ describe('showValue', function () {
     expect(showValue([1, 2, 3])).equals('array')
     expect(showValue({ a: 1, b: 2 })).equals('object')
     expect(showValue(() => {})).equals('function')
+    expect(showValue(Symbol('Test'))).equals('Symbol(Test)')
   })
 })
