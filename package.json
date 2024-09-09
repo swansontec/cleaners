@@ -10,12 +10,11 @@
   "repository": "https://www.github.com/swansontec/cleaners",
   "license": "MIT",
   "author": "William Swanson",
-  "type": "module",
   "exports": {
     ".": {
       "import": {
         "types": "./src/index.d.ts",
-        "default": "./lib/cleaners.js"
+        "default": "./lib/esm/cleaners.js"
       },
       "require": {
         "types": "./src/index.d.ts",
@@ -25,7 +24,7 @@
     "./package.json": "./package.json"
   },
   "main": "./lib/cjs/cleaners.js",
-  "module": "./lib/cleaners.js",
+  "module": "./lib/esm/cleaners.js",
   "types": "./src/index.d.ts",
   "files": [
     "/CHANGELOG.md",
@@ -38,7 +37,7 @@
     "clean": "rimraf lib",
     "fix": "eslint . --fix",
     "flow": "flow",
-    "lib": "rollup -c && cp src/index.js.flow lib && echo '{\"type\":\"commonjs\"}' > lib/cjs/package.json",
+    "lib": "rollup -c && cp src/index.js.flow lib/cjs && echo '{\"type\":\"module\"}' > lib/esm/package.json",
     "lint": "eslint .",
     "precommit": "lint-staged && npm-run-all -p flow types",
     "prepare": "husky install && npm-run-all clean -p lib types",

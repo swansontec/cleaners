@@ -13,17 +13,20 @@ describe('asTuple', function () {
 
   it('rejects non-array tuples', function () {
     const data = { length: 0 }
-    expect(() => asNumberwang(data)).throws(TypeError, 'Expected an array')
+    expect(() => asNumberwang(data)).throws(
+      TypeError,
+      'Expected an array, got object'
+    )
   })
 
   it('rejects invalid tuple contents', function () {
     expect(() => asNumberwang(['wanganum', 2])).throws(
       TypeError,
-      'Expected a number at [0]'
+      'Expected a number, got "wanganum" at [0]'
     )
     expect(() => asNumberwang([1])).throws(
       TypeError,
-      'Expected a string at [1]'
+      'Expected a string, got undefined at [1]'
     )
   })
 })
