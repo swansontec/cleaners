@@ -1,5 +1,9 @@
 # cleaners
 
+## 0.3.17 (2024-09-09)
+
+- changed: When we receive an unexpected value, include the actual received value in the error message.
+
 ## 0.3.16 (2023-04-24)
 
 - fixed: Change the CommonJS file extension back to "js", to work better with bundlers like Metro.
